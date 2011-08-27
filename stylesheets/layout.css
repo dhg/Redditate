@@ -1,0 +1,295 @@
+/*
+* Skeleton V1.0.3
+* Copyright 2011, Dave Gamache
+* www.getskeleton.com
+* Free to use under the MIT license.
+* http://www.opensource.org/licenses/mit-license.php
+* 7/17/2011
+*/
+
+
+body {
+	padding-top: 76px;
+}
+.container {
+	width: 880px;
+	margin: 0 auto;
+}
+
+/* Nav
+================================================== */
+nav {
+	width: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: #fff;
+	background: rgba(255,255,255,.96);
+	z-index: 4;
+	padding-bottom: 10px;
+}
+nav .container {
+	border-top: 4px solid #000;
+	padding-top: 10px;
+}
+nav h1 {
+	font-size: 18px;
+	float: left;
+	margin-bottom: 0;
+	color: #555;
+}
+nav h1 strong {
+	font-size: 24px;
+	color: #222;
+}
+nav .subreddit {
+	cursor: pointer;
+}
+nav .subreddit:hover {
+	color: #333;
+}
+nav .subreddit:hover .carrot{
+	border-top-color: #333;
+}
+nav .view-options {
+	float: right;
+	line-height: 50px;
+}
+nav .view-options a {
+	text-decoration: none;
+}
+.fullview nav .fullview,
+.listview nav .listview,
+.gridview nav .gridview {
+	font-weight: bold;
+}
+
+/* Posts
+================================================== */
+.post {
+	padding-bottom: 20px;
+	margin-top: 20px;
+	border-bottom: 1px solid #ccc;
+	overflow: hidden;
+}
+.posts .post:last-child {
+	border-bottom: 0;
+}
+.post .metadata,
+.post .metadata a {
+	color: #999;
+	font-size: 13px;
+	margin-bottom: 10px;
+}
+.post .metadata a:hover {
+	color: #333;
+}
+.post .image-embed img {
+	max-width: 700px;
+	max-height: 500px;
+	/* cursor:url(../images/mag-icon.png), -moz-zoom-in; */
+}
+.post img.fullwidth {
+	max-height: none;
+}
+.post .thumbnail-embed {
+	display: none;
+}
+h2 a {
+	text-decoration: none;
+	font-weight: 300;
+}
+
+/* Gridview
+================================================== */
+.gridview .posts {
+	margin-left: -20px;
+	overflow: hidden;
+}
+.gridview .post {
+	width: 280px;
+	float: left;
+	margin-left: 20px;
+}
+.gridview h2 {
+	font-size: 21px;
+	line-height: 26px;
+}
+.gridview .post img {
+	max-width: 280px;
+	max-height: 280px;
+}
+
+/* Listview
+================================================== */
+.listview .post .image-embed,
+.listview .post iframe  {
+	display: none;
+}
+.listview .post .thumbnail-embed {
+	display: block;
+	float: left;
+	margin-right: 15px;
+}
+.listview .post h2 {
+	font-size: 24px;
+	line-height: 30px;
+}
+.listview .post {
+	padding-bottom: 10px;
+	margin-top: 15px;
+}
+.listview .thumbnail-embed + .content {
+	margin-left: 85px;
+}
+
+/* Loadmore Button
+================================================== */
+.loadmore {
+	width: 100%;
+	border: 1px solid #999;
+	text-align: center;
+	font-size: 20px;
+	font-family: "Adelle", "Georgia", "Times New Roman", serif;
+	display: block;
+	border-radius: 5px;
+	padding: 10px 0;
+	margin-bottom: 40px;
+	text-decoration: none;
+}
+.loadmore:hover {
+	border: 1px solid #333;
+	background: #f5f5f5;
+}
+
+/* Subreddit Selector
+================================================== */
+.carrot {
+	width: 0;
+	height: 0;
+	border-left: 3px solid transparent;
+	border-right: 3px solid transparent;
+	border-top: 3px solid #999;
+	display: inline-block;
+	position: relative;
+	top: -4px;
+	margin-left: 3px;
+}
+.subreddit-picker {
+	background: #232323;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	z-index: 3;
+}
+.subreddit-picker .container {
+	padding-top: 120px;
+}
+.subreddit-picker .one-quarter.column {
+	width: 211px;
+	margin-left: 12px;
+	float: left;
+	margin-bottom: 30px;
+}
+.subreddit-picker .one-quarter.column:first-child {
+	margin-left: 0;
+}
+.subreddit-picker h2 small {
+	font-size: 14px;
+	color: #b5b5b5;
+	font-style: italic;
+	display: block;
+	font-weight: 300;
+}
+.subreddit-picker h2 {
+	font-weight: 600;
+	line-height: 30px;
+	color: #fff;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #424242;
+	padding-bottom: 20px;
+}
+.subreddit-picker ul li {
+	margin-bottom: 0;
+}
+.subreddit-picker ul a {
+	font-family: "Adelle", "Georgia", "Times New Roman", serif;
+	color: #ccc;
+	font-size: 16px;
+	font-weight: 300;
+	text-decoration: none;
+	padding: 10px 0 10px 6px;
+	display: block;
+	margin-left: -6px;
+}
+.subreddit-picker ul a:hover {
+	background: #323232;
+	color: #eee;
+}
+.other-subreddit-tutorial {
+	font-family: "Adelle", "Georgia", "Times New Roman", serif;
+	text-align: center;
+	font-size: 12px;
+	line-height: 15px;
+}
+.subreddit-picker-open .logo .subreddit,
+.subreddit-picker-open .view-options,
+.subreddit-heading,
+.subreddit-close-button {
+	display: none;
+}
+.subreddit-picker-open .logo .subreddit-heading,
+.subreddit-picker-open .subreddit-close-button {
+	display: inline;
+}
+.subreddit-close-button {
+	float: right;
+	font-weight: 600;
+	color: #222222;
+	text-decoration: none;
+	line-height: 50px;
+}
+
+
+
+
+/* Modal
+================================================== */
+/*.modal {
+	background: rgba(0,0,0,.85);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	z-index: 10;
+	overflow: scroll;
+}
+.modal img {
+	position: absolute;
+}*/
+
+
+/* iFrame Viewier
+================================================== */
+/*.frame-viewer {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: #fff;
+	top: 0;
+	left: 0;
+	display: none;
+}
+.close-button {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	z-index: 20;
+	display: none;
+}
+*/

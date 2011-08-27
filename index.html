@@ -1,0 +1,188 @@
+<!doctype html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+	<meta charset="utf-8" />
+	<title></title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="stylesheets/base.css">
+	<link rel="stylesheet" href="stylesheets/layout.css">
+
+	<!-- JS
+	================================================== -->
+	<script type="text/javascript" src="http://use.typekit.com/koy2okr.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	<script src='javascripts/jquery-1.5.1.min.js'></script>
+	<script src='javascripts/handlebars.1.0.0.beta.3.js'></script>
+
+	<!-- HTML template for post
+	================================================== -->
+	<script id="postTemplate" type="text/x-handlebars-template">
+		<div class="post">
+			{{#hasThumbnail thumbnail}}
+				{{thumbnail}}
+			{{/hasThumbnail}}
+			<div class="content">
+				<h2 class="remove-bottom">
+					<a class="post-title" href="{{url}}">{{title}}</a>
+				</h2>
+				<div class="metadata">
+					{{score}} points |
+					<a class="permalink" href="http://www.reddit.com{{permalink}}">{{num_comments}} comments</a> |
+					{{domain}}
+				</div>
+				{{#hasImage url}}
+					{{url}}
+				{{/hasImage}}
+				{{#hasYoutube url}}
+					{{url}}
+				{{/hasYoutube}}
+			</div>
+		</div>
+	</script>
+	<script src='javascripts/jquery.cookie.js'></script>
+	<script src="javascripts/app.js"></script>
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png" />
+
+</head>
+<body class="fullview">
+
+
+	<!-- Nav and Container
+	================================================== -->
+	<nav>
+		<div class="container">
+			<h1 class="logo">
+				<strong>Redditorial:</strong>
+				<span class="subreddit"><span class="title">TopNews</span> <span class="carrot"></span></span>
+				<span class="subreddit-heading">Pick a topic to view</span>
+			</h1>
+			<span class="view-options">
+				<a class="fullview" data-viewtype="fullview" href="#">Fullview</a> /
+				<a class="listview" data-viewType="listview" href="#">Listview</a> /
+				<a class="gridview" data-viewType="gridview" href="#">Gridview</a>
+			</span>
+			<a class="subreddit-close-button" href="">Close</a>
+		</div>
+	</nav>
+	<div class="main container">
+		<div class="posts"></div>
+		<a class="loadmore" href="#">Load 25 more</a>
+	</div><!-- container -->
+
+	<!-- Subreddit Menus -->
+	<div class="subreddit-picker">
+		<div class="container">
+			<div class="one-quarter column">
+				<h2><small>keeping it</small>Fresh</h2>
+				<ul>
+					<li><a href="?r/">Top News</a></li>
+					<li><a href="?r=New">New</a></li>
+					<li><a href="?r=r/worldnews">World News</a></li>
+					<li><a href="?r=Top">Top</a></li>
+				</ul>
+			</div>
+			<div class="one-quarter column">
+				<h2><small>it's all about the</small>Visuals</h2>
+				<ul>
+					<li><a href="?r=r/Pics/">Pics</a></li>
+					<li><a href="?r=r/Videos">Videos</a></li>
+					<li><a href="?r=r/Gifs">Gifs</a></li>
+					<li><a href="?r=r/Aww">Aww</a></li>
+				</ul>
+			</div>
+			<div class="one-quarter column">
+				<h2><small>I love being a </small>Nerd</h2>
+				<ul>
+					<li><a href="?r=r/Gaming">Gaming</a></li>
+					<li><a href="?r=r/Starcraft">Starcraft</a></li>
+					<li><a href="?r=r/Technology">Technology</a></li>
+					<li><a href="?r=r/Fffffffuuuuuuuuuuuu">Ragecomics</a></li>
+				</ul>
+			</div>
+			<div class="one-quarter column">
+				<h2><small>always keep</small>Learning</h2>
+				<ul>
+					<li><a href="?r=r/AskReddit">AskReddit</a></li>
+					<li><a href="?r=r/IAmA">I Am A&hellip;</a></li>
+					<li><a href="?r=r/TodayILearned">Today I Learned</a></li>
+					<li><a href="?r=r/DoesAnybodyElse">Does Anybody Else</a></li>
+				</ul>
+			</div>
+			<p class="other-subreddit-tutorial">Want to view another subreddit? Just use this fine equation:<br />www.redditorial.com/?r=r/nameofthesubreddit</p>
+		</div>
+	</div>
+
+
+
+<!-- End Document
+================================================== -->
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!--
+
+MVP
+
+- Get an AJAX spinner in place
+- Only scroll to the right place on back button, not on any page load
+- Embed even mislinked imgur photos
+- Mag glass for images that resize
+- Get an explanation page and cookie those who haven't seen it
+- Hookup gridview
+- Click to comments opens in a modal
+- Link images properly everywhere
+- Cleanup JS and fix jenk code
+- Give a legit name to the Redditorial
+- Reconsider youtube greasemonkey cause it breaks a lot
+-
+- Future: Make domain clickable
+
+ -->
+
+
+
+
+
+
+
+	<!-- iFrame Viewer -->
+<!-- 	<iframe class="frame-viewer" src="" frameborder="0"></iframe>
+	<a href="" class="close-button">Close</a> -->
+
+	<!-- Modal -->
+	<!-- <div class="modal">
+		<div class="title"></div>
+		<img src="" alt="">
+	</div> -->
+
+
