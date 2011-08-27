@@ -7,7 +7,13 @@ Redditorial is a simple Reddit reader that aims to make the browsing experience 
 Why am I making it?
 -----
 
-I effin love browsing Reddit, but I wish I had a way to browse it that was a bit more friendly and beautiful. Reddit's design is functional, but I wanted to strip it down and make it my own.
+I effin love browsing Reddit, but I wish I had a way to browse it that was a bit more friendly and beautiful. Reddit's design is functional, but I wanted to strip it down and make it my own. I've been noodling on this on evenings when I just need to unwind, so don't expect timely progress.
+
+
+Want to use it yourself?
+-----
+
+Download the codebase here, open the index.html file and enjoy :)
 
 
 What works right now?
