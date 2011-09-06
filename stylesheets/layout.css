@@ -8,8 +8,15 @@
 */
 
 
+html {
+	min-height: 100%;
+}
 body {
 	padding-top: 76px;
+	min-height: 100%;
+}
+.loading {
+	background: url(../images/loading.gif) center center no-repeat;
 }
 .container {
 	width: 880px;
@@ -85,9 +92,9 @@ nav .view-options a {
 	color: #333;
 }
 .post .image-embed img {
-	max-width: 700px;
+	max-width: 880px;
 	max-height: 500px;
-	/* cursor:url(../images/mag-icon.png), -moz-zoom-in; */
+	cursor:url(../images/mag-icon.png), -moz-zoom-in;
 }
 .post img.fullwidth {
 	max-height: none;
@@ -160,6 +167,9 @@ h2 a {
 .loadmore:hover {
 	border: 1px solid #333;
 	background: #f5f5f5;
+}
+.loading .loadmore {
+	display: none;
 }
 
 /* Subreddit Selector

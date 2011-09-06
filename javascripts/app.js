@@ -7,6 +7,7 @@ $(document).ready(function() {
   var afterString;
   var subdomain = gup('r');
   var scrollFromTop;
+  var onKeyboardPost = 0;
 
   //Initial Load -----------------------------------------------------
 
@@ -25,6 +26,7 @@ $(document).ready(function() {
       afterString = post.data.name;
     });
 	}).complete(function() {
+    $('body').removeClass('loading');
     if($.cookie("scrollFromTop")) {
       scrollFromTop = $.cookie("scrollFromTop");
       $(document).scrollTop(scrollFromTop);
@@ -32,15 +34,26 @@ $(document).ready(function() {
   })
 
   // Load more JSON
-  $('.loadmore').click(function(e){
-    e.preventDefault();
-    $.getJSON("http://www.reddit.com/"+subdomain+".json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
-      $.each(data.data.children, function(i, post) {
-        renderPost(post.data);
-        afterString = post.data.name;
+  $(window).scroll(function(){
+    if ($(window).scrollTop() == $(document).height() - $(window).height()){
+      $.getJSON("http://www.reddit.com/"+subdomain+".json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
+        $.each(data.data.children, function(i, post) {
+          renderPost(post.data);
+          afterString = post.data.name;
+        });
       });
-    });
+    }
   });
+
+  // $('.loadmore').click(function(e){
+  //   e.preventDefault();
+  //   $.getJSON("http://www.reddit.com/"+subdomain+".json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
+  //     $.each(data.data.children, function(i, post) {
+  //       renderPost(post.data);
+  //       afterString = post.data.name;
+  //     });
+  //   });
+  // });
 
   //Rendering -----------------------------------------------------
 
@@ -60,13 +73,16 @@ $(document).ready(function() {
   // If image is real, render it
   Handlebars.registerHelper('hasImage', function(url, fn) {
     if(isImage(url)) {
+      if(isImgur(url)) {
+        url += ".jpg"
+      }
       return '<a class="image-embed"><img src="'+url+'" alt="" /></a>';
     } else {
       return false;
     }
   });
 
-// If embedded video is real, render it
+  // If embedded video is real, render it
   Handlebars.registerHelper('hasYoutube', function(url, fn) {
     if(isYoutube(url)) {
       url = url.replace("watch?v=", "embed/");
@@ -91,6 +107,14 @@ $(document).ready(function() {
   // Image fullsize on click
   $('.post .image-embed').live('click', function(e) {
     e.preventDefault();
+    if($(this).children('img').hasClass('fullwidth')) {
+      // Determine if image is above offscreen and if so, make it at top of shrink
+      var postParentPosition = $(this).children('img').offset();
+      if(postParentPosition.top < $(window).scrollTop()) {
+        window.scrollTo(postParentPosition.left, (postParentPosition.top - $('nav').height() - 10));
+      }
+    }
+    // Toggle fullwidth class
     $(this).children('img').toggleClass('fullwidth');
   });
 
@@ -103,6 +127,7 @@ $(document).ready(function() {
       .removeClass('listview')
       .removeClass('fullview')
       .addClass(activeClass)
+    window.scrollTo(0,0);
     $.cookie("viewType", null);
     $.cookie("viewType", activeClass, { expires: 100 });
   });
@@ -118,19 +143,31 @@ $(document).ready(function() {
     $('body').removeClass('subreddit-picker-open');
     $('.subreddit-picker').slideUp(250);
   });
+
+  // Store cookie scroll position
+  $(window).scroll(function() {
+    scrollFromTop = $(document).scrollTop();
+    $.cookie("scrollFromTop", scrollFromTop);
+  });
+
   // Closing Subreddit Picker
   document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode == 27) {
       $('body').removeClass('subreddit-picker-open');
       $('.subreddit-picker').slideUp(250);
+    } else if (evt.keyCode == 190) {
+      //Right carrot
+      var postScrollOffset = $('.post').eq(onKeyboardPost).offset();
+      window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
+      onKeyboardPost++
+    } else if (evt.keyCode == 188) {
+      //Left carrot
+      var postScrollOffset = $('.post').eq(onKeyboardPost).offset();
+      window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
+      onKeyboardPost--
     }
   };
-  // Bullshit way to store
-  $(window).scroll(function() {
-    scrollFromTop = $(document).scrollTop();
-    $.cookie("scrollFromTop", scrollFromTop);
-  });
 
   //Utility Functions -----------------------------------------------------
 
@@ -148,8 +185,22 @@ $(document).ready(function() {
 
   //Determine is this is an image
   function isImage(str){
-    result = (/\.(?=gif|jpg|png)/gi).test(str);
+    var result = (/\.(?=gif|jpg|png)/gi).test(str);
+    var isImgur = (/imgur*/).test(str);
+    if(isImgur && !result) {
+      result += ".jpg"
+    }
     if (result) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //Determine if is mislinked imgur
+  function isImgur(str){
+    var isImgur = (/imgur*/).test(str);
+    if(isImgur) {
       return true;
     } else {
       return false;
@@ -158,7 +209,7 @@ $(document).ready(function() {
 
   //Determine is this is a youtube video
   function isYoutube(str){
-    result = str.indexOf('youtube');
+    var result = str.indexOf('youtube');
     if (result != -1) {
       return true;
     } else {
@@ -166,15 +217,15 @@ $(document).ready(function() {
     }
   }
 
+  //Deterine if image is already full-width
+  function isFullWidth(img) {
+    console.log($(img).width())
+    // if($(img).width() == "700")
+  }
+
+});
 
 
-
-
-
-
-
-
-  //iFraming -----------------------------------------------------
 
   // iFraming of links
   // $('.post-title, .permalink').live('click', function(e) {
@@ -185,13 +236,11 @@ $(document).ready(function() {
   //     .show();
   //   $('.close-button').show();
   // });
-
   // Closing iFrame
   // $('.close-button').click(function(e) {
   //   e.preventDefault();
   //   $('.frame-viewer, .close-button').hide();
   // });
-
   // Closing iFrame w/esc key
   // document.onkeydown = function(evt) {
   //   evt = evt || window.event;
@@ -199,11 +248,6 @@ $(document).ready(function() {
   //       $('.frame-viewer, .close-button, .modal').hide();
   //   }
   // };
-
-
-
-
-
   //Infinite scroll handler
   // $(window).scroll(function() {
   //   console.log($('body').scrollTop(), $('body').outerHeight()-650)
@@ -219,5 +263,3 @@ $(document).ready(function() {
   //     });
   //   }
   // });
-
-});

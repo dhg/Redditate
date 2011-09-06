@@ -34,7 +34,7 @@
 	<!-- HTML template for post
 	================================================== -->
 	<script id="postTemplate" type="text/x-handlebars-template">
-		<div class="post">
+		<div class="post" id="{{id}}">
 			{{#hasThumbnail thumbnail}}
 				{{thumbnail}}
 			{{/hasThumbnail}}
@@ -50,9 +50,6 @@
 				{{#hasImage url}}
 					{{url}}
 				{{/hasImage}}
-				{{#hasYoutube url}}
-					{{url}}
-				{{/hasYoutube}}
 			</div>
 		</div>
 	</script>
@@ -67,7 +64,7 @@
 	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png" />
 
 </head>
-<body class="fullview">
+<body class="fullview loading">
 
 
 	<!-- Nav and Container
@@ -155,16 +152,13 @@ MVP
 
 - Get an AJAX spinner in place
 - Only scroll to the right place on back button, not on any page load
-- Embed even mislinked imgur photos
-- Mag glass for images that resize
 - Get an explanation page and cookie those who haven't seen it
-- Hookup gridview
 - Click to comments opens in a modal
 - Link images properly everywhere
+- Keyboard navigation
+- Change cursor on grow and shrink
 - Cleanup JS and fix jenk code
-- Give a legit name to the Redditorial
 - Reconsider youtube greasemonkey cause it breaks a lot
--
 - Future: Make domain clickable
 
  -->
