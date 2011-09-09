@@ -1,13 +1,13 @@
 $(document).ready(function() {
 
-
   //Global Vars -----------------------------------------------------
 
   var posts = $('.posts');
   var afterString;
   var subdomain = gup('r');
-  var scrollFromTop;
+  var previousSubdomain;
   var onKeyboardPost = 0;
+  var loader = $('.wash');
 
   //Initial Load -----------------------------------------------------
 
@@ -20,40 +20,37 @@ $(document).ready(function() {
   //JSON -----------------------------------------------------
 
   // Retrieve JSON
-	$.getJSON("http://www.reddit.com/"+subdomain+".json?jsonp=?", null, function(data) {
+	$.getJSON("http://www.reddit.com/"+subdomain+".json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
 		$.each(data.data.children, function(i, post) {
       renderPost(post.data);
       afterString = post.data.name;
     });
 	}).complete(function() {
-    $('body').removeClass('loading');
-    if($.cookie("scrollFromTop")) {
-      scrollFromTop = $.cookie("scrollFromTop");
-      $(document).scrollTop(scrollFromTop);
-    }
-  })
+    loader.fadeOut(100);
+    //If same as previous subdomain, use the scroll position
+    if ($.cookie("subdomain") == subdomain) {
+      $(document).scrollTop($.cookie("scrollFromTop"));
+    } else {
+      $.cookie("subdomain", subdomain)
+      $.cookie("scrollFromTop", 0);
+      $(document).scrollTop(0);
+    };
+  });
 
   // Load more JSON
   $(window).scroll(function(){
     if ($(window).scrollTop() == $(document).height() - $(window).height()){
+      loader.fadeIn(100);
       $.getJSON("http://www.reddit.com/"+subdomain+".json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
         $.each(data.data.children, function(i, post) {
           renderPost(post.data);
           afterString = post.data.name;
         });
-      });
+      }).complete(function() {
+        loader.fadeOut(100);
+      })
     }
   });
-
-  // $('.loadmore').click(function(e){
-  //   e.preventDefault();
-  //   $.getJSON("http://www.reddit.com/"+subdomain+".json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
-  //     $.each(data.data.children, function(i, post) {
-  //       renderPost(post.data);
-  //       afterString = post.data.name;
-  //     });
-  //   });
-  // });
 
   //Rendering -----------------------------------------------------
 
@@ -146,8 +143,7 @@ $(document).ready(function() {
 
   // Store cookie scroll position
   $(window).scroll(function() {
-    scrollFromTop = $(document).scrollTop();
-    $.cookie("scrollFromTop", scrollFromTop);
+    $.cookie("scrollFromTop", $(document).scrollTop());
   });
 
   // Closing Subreddit Picker
@@ -169,10 +165,17 @@ $(document).ready(function() {
     }
   };
 
+  //Spinner -----------------------------------------------------
+  var opts = {
+    width: 2, // The line thickness
+  };
+  var target = document.getElementById('loading');
+  var spinner = new Spinner(opts).spin(target);
+
   //Utility Functions -----------------------------------------------------
 
   // Read URL to get params
-  function gup( name ) {
+  function gup(name) {
     name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
     var regexS = "[\\?&]"+name+"=([^&#]*)";
     var regex = new RegExp( regexS );
@@ -224,42 +227,3 @@ $(document).ready(function() {
   }
 
 });
-
-
-
-  // iFraming of links
-  // $('.post-title, .permalink').live('click', function(e) {
-  //   e.preventDefault();
-  //   var postURL = ($(this).attr('href'));
-  //   $('.frame-viewer')
-  //     .attr('src', postURL)
-  //     .show();
-  //   $('.close-button').show();
-  // });
-  // Closing iFrame
-  // $('.close-button').click(function(e) {
-  //   e.preventDefault();
-  //   $('.frame-viewer, .close-button').hide();
-  // });
-  // Closing iFrame w/esc key
-  // document.onkeydown = function(evt) {
-  //   evt = evt || window.event;
-  //   if (evt.keyCode == 27) {
-  //       $('.frame-viewer, .close-button, .modal').hide();
-  //   }
-  // };
-  //Infinite scroll handler
-  // $(window).scroll(function() {
-  //   console.log($('body').scrollTop(), $('body').outerHeight()-650)
-  //   if ($('body').scrollTop() > $('body').outerHeight()-650) {
-  //     $('body').addClass('loading');
-  //     $.getJSON("http://www.reddit.com/.json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
-  //       console.log("getting JSON")
-  //       $.each(data.data.children, function(i, post) {
-  //         renderPost(post.data);
-  //         console.log("rendering JSON")
-  //         afterString = post.data.name;
-  //       });
-  //     });
-  //   }
-  // });

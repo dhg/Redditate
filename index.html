@@ -54,6 +54,7 @@
 		</div>
 	</script>
 	<script src='javascripts/jquery.cookie.js'></script>
+	<script src="javascripts/spin.min.js"></script>
 	<script src="javascripts/app.js"></script>
 
 	<!-- Favicons
@@ -64,7 +65,7 @@
 	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png" />
 
 </head>
-<body class="fullview loading">
+<body class="fullview">
 
 
 	<!-- Nav and Container
@@ -86,7 +87,7 @@
 	</nav>
 	<div class="main container">
 		<div class="posts"></div>
-		<a class="loadmore" href="#">Load 25 more</a>
+		<!-- <a class="loadmore" href="#">Load 25 more</a> -->
 	</div><!-- container -->
 
 	<!-- Subreddit Menus -->
@@ -133,6 +134,10 @@
 	</div>
 
 
+	<div class="wash">
+		<div id="loading"></div>
+	</div>
+
 
 <!-- End Document
 ================================================== -->
@@ -150,7 +155,6 @@
 
 MVP
 
-- Get an AJAX spinner in place
 - Only scroll to the right place on back button, not on any page load
 - Get an explanation page and cookie those who haven't seen it
 - Click to comments opens in a modal
