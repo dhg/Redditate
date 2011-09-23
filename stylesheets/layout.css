@@ -96,11 +96,15 @@ nav .view-options a {
 }
 .post .image-embed img {
 	max-width: 880px;
-	max-height: 500px;
-	cursor:url(../images/mag-icon.png), -moz-zoom-in;
+	max-height: 501px;
+	cursor:url(../images/zoom-in-icon.png), -moz-zoom-in;
 }
 .post img.fullwidth {
 	max-height: none;
+	cursor:url(../images/zoom-out-icon.png), -moz-zoom-out;
+}
+.post .image-embed img.not-resizeable {
+	cursor: default;
 }
 .post .thumbnail-embed {
 	display: none;

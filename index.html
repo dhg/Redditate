@@ -36,7 +36,7 @@
 	<script id="postTemplate" type="text/x-handlebars-template">
 		<div class="post" id="{{id}}">
 			{{#hasThumbnail thumbnail url}}
-				<a href="">{{thumbnail}}</a>
+				{{thumbnail}}
 			{{/hasThumbnail}}
 			<div class="content">
 				<h2 class="remove-bottom">
@@ -50,10 +50,14 @@
 				{{#hasImage url}}
 					{{url}}
 				{{/hasImage}}
+				{{#hasYoutube url}}
+					{{url}}
+				{{/hasYoutube}}
 			</div>
 		</div>
 	</script>
 	<script src='javascripts/jquery.cookie.js'></script>
+	<script src='javascripts/imagesLoaded.js'></script>
 	<script src="javascripts/spin.min.js"></script>
 	<script src="javascripts/app.js"></script>
 
@@ -147,39 +151,15 @@
 
 
 
-
-
-
-
 <!--
 
 MVP
 
 - Only scroll to the right place on back button, not on any page load
-- Change cursor on grow and shrink
 - Cleanup JS and fix jenk code
-- Reconsider youtube greasemonkey cause it breaks a lot
 - Make responsive?
 - Future: Fix Keyboard navigation
 - Future: Make domain clickable
 - Future: Click to comments opens in a modal
 
  -->
-
-
-
-
-
-
-
-	<!-- iFrame Viewer -->
-<!-- 	<iframe class="frame-viewer" src="" frameborder="0"></iframe>
-	<a href="" class="close-button">Close</a> -->
-
-	<!-- Modal -->
-	<!-- <div class="modal">
-		<div class="title"></div>
-		<img src="" alt="">
-	</div> -->
-
-

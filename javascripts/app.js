@@ -5,9 +5,8 @@ $(document).ready(function() {
   var posts = $('.posts');
   var afterString;
   var subdomain = gup('r');
-  var previousSubdomain;
-  var onKeyboardPost = 0;
   var loader = $('.wash');
+
 
   //Initial Load -----------------------------------------------------
 
@@ -30,13 +29,15 @@ $(document).ready(function() {
 	}).complete(function() {
     loader.fadeOut(100);
     //If same as previous subdomain, use the scroll position
-    if ($.cookie("subdomain") == subdomain) {
-      $(document).scrollTop($.cookie("scrollFromTop"));
-    } else {
-      $.cookie("subdomain", subdomain)
-      $.cookie("scrollFromTop", 0);
-      $(document).scrollTop(0);
-    };
+    // if ($.cookie("subdomain") == subdomain) {
+      // $(document).scrollTop($.cookie("scrollFromTop"));
+    // } else {
+      // $.cookie("subdomain", subdomain)
+      // $.cookie("scrollFromTop", 0);
+      // $(document).scrollTop(0);
+    // };
+    classifyImages();
+    // $.cookie("apiURL", apiURL);
   });
 
   // Load more JSON
@@ -50,6 +51,8 @@ $(document).ready(function() {
         });
       }).complete(function() {
         loader.fadeOut(100);
+        classifyImages();
+        // $.cookie("apiURL", apiURL);
       })
     }
   });
@@ -71,10 +74,15 @@ $(document).ready(function() {
 
   // If image is real, render it
   Handlebars.registerHelper('hasImage', function(url, fn) {
-    if(isImage(url)) {
-      if(isImgur(url)) {
+    var isImgur = (/imgur*/).test(url);
+    if(isImgur) {
+      if(isImage(url)) {
+        // do nothing
+      } else {
         url += ".jpg"
       }
+    }
+    if(isImage(url)) {
       return '<a class="image-embed"><img src="'+url+'" alt="" /></a>';
     } else {
       return false;
@@ -84,8 +92,10 @@ $(document).ready(function() {
   // If embedded video is real, render it
   Handlebars.registerHelper('hasYoutube', function(url, fn) {
     if(isYoutube(url)) {
-      url = url.replace("watch?v=", "embed/");
-      return '<iframe width="420" height="345" src="'+url+'?wmode=transparent" frameborder="0" wmode="Opaque" allowfullscreen></iframe>';
+      youtubeID = url.replace(/^[^v]+v.(.{11}).*/,"$1");
+      youtubeLinkTime = url.split("#");
+      youtubeLinkTime = youtubeLinkTime[1];
+      return '<iframe width="420" height="345" src="http://www.youtube.com/embed/'+youtubeID+'?wmode=transparent&#'+youtubeLinkTime+'" frameborder="0" wmode="Opaque" allowfullscreen></iframe>';
     } else {
       return false;
     }
@@ -144,9 +154,9 @@ $(document).ready(function() {
   });
 
   // Store cookie scroll position
-  $(window).scroll(function() {
-    $.cookie("scrollFromTop", $(document).scrollTop());
-  });
+  // $(window).scroll(function() {
+  //   $.cookie("scrollFromTop", $(document).scrollTop());
+  // });
 
   // Keyboard interactions
   document.onkeydown = function(evt) {
@@ -192,21 +202,7 @@ $(document).ready(function() {
   //Determine is this is an image
   function isImage(str){
     var result = (/\.(?=gif|jpg|png)/gi).test(str);
-    var isImgur = (/imgur*/).test(str);
-    if(isImgur && !result) {
-      result += ".jpg"
-    }
     if (result) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  //Determine if is mislinked imgur
-  function isImgur(str){
-    var isImgur = (/imgur*/).test(str);
-    if(isImgur) {
       return true;
     } else {
       return false;
@@ -223,10 +219,16 @@ $(document).ready(function() {
     }
   }
 
-  //Deterine if image is already full-width
-  function isFullWidth(img) {
-    console.log($(img).width())
-    // if($(img).width() == "700")
+  function classifyImages() {
+    $('img').not('already-classified').imagesLoaded(function() {
+      $(this).each(function() {
+      $(this).addClass('already-classified');
+        if($(this).width() == 880) {
+          $(this).addClass('not-resizeable')
+        } else if($(this).width() != 880 && $(this).height() != 501) {
+          $(this).addClass('not-resizeable')
+        }
+      })
+    });
   }
-
 });

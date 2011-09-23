@@ -1,7 +1,7 @@
-Redditorial
+Redditate
 =================
 
-Redditorial is a simple Reddit reader that aims to make the browsing experience more pleasurable :)
+Redditate is a simple Reddit reader that aims to make the browsing experience more pleasurable :)
 
 
 Why am I making it?
@@ -24,17 +24,16 @@ What works right now?
 + Coming back brings you back to same scroll position
 + Inline imgur and youtube - click them to play or zoom in
 + Click images to see max-size inline
++ Get an AJAX spinner in place
++ Embed even mislinked imgur photos
++ Mag glass for images that resize
++ Youtube embeds
++ Link images properly everywhere
 
 
 What's coming next?
 -----------
 
-+ Get an AJAX spinner in place
 + Only cookie scroll position when you come back (not on any page)
-+ Embed even mislinked imgur photos
-+ Mag glass for images that resize
-+ Hookup gridview properly
 + Click to open comments in a modal
-+ Link images properly everywhere
 + Cleanup JS and fix jenk code
-+ Reconsider youtube embed cause it breaks a lot
