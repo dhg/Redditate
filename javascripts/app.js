@@ -11,11 +11,13 @@ $(document).ready(function() {
 
   //Initial Load -----------------------------------------------------
 
-  $('body')
-    .removeClass('fullview')
-    .removeClass('listview')
-    .removeClass('gridview')
-    .addClass($.cookie("viewType"));
+  if($.cookie("viewType")) {
+    $('body')
+      .removeClass('fullview')
+      .removeClass('listview')
+      .removeClass('gridview')
+      .addClass($.cookie("viewType"));
+  }
 
   //JSON -----------------------------------------------------
 
@@ -90,9 +92,9 @@ $(document).ready(function() {
   });
 
   // If thumb is real, render it
-  Handlebars.registerHelper('hasThumbnail', function(thumbnail, fn) {
+  Handlebars.registerHelper('hasThumbnail', function(thumbnail, url, fn) {
     if(thumbnail != "") {
-      return '<a class="thumbnail-embed"><img src="'+thumbnail+'" alt="" /></a>';
+      return '<a class="thumbnail-embed" href="'+url+'"><img src="'+thumbnail+'" alt="" /></a>';
     } else {
       return false;
     }
@@ -146,23 +148,24 @@ $(document).ready(function() {
     $.cookie("scrollFromTop", $(document).scrollTop());
   });
 
-  // Closing Subreddit Picker
+  // Keyboard interactions
   document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode == 27) {
       $('body').removeClass('subreddit-picker-open');
       $('.subreddit-picker').slideUp(250);
-    } else if (evt.keyCode == 190) {
-      //Right carrot
-      var postScrollOffset = $('.post').eq(onKeyboardPost).offset();
-      window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
-      onKeyboardPost++
-    } else if (evt.keyCode == 188) {
-      //Left carrot
-      var postScrollOffset = $('.post').eq(onKeyboardPost).offset();
-      window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
-      onKeyboardPost--
     }
+    //else if (evt.keyCode == 190) {
+    //   //Right carrot
+    //   var postScrollOffset = $('.post').eq(onKeyboardPost).offset();
+    //   window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
+    //   onKeyboardPost++
+    // } else if (evt.keyCode == 188) {
+    //   //Left carrot
+    //   var postScrollOffset = $('.post').eq(onKeyboardPost).offset();
+    //   window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
+    //   onKeyboardPost--
+    // }
   };
 
   //Spinner -----------------------------------------------------

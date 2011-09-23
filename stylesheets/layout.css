@@ -110,26 +110,6 @@ h2 a {
 	font-weight: 300;
 }
 
-/* Gridview
-================================================== */
-.gridview .posts {
-	margin-left: -20px;
-	overflow: hidden;
-}
-.gridview .post {
-	width: 280px;
-	float: left;
-	margin-left: 20px;
-}
-.gridview h2 {
-	font-size: 21px;
-	line-height: 26px;
-}
-.gridview .post img {
-	max-width: 280px;
-	max-height: 280px;
-}
-
 /* Listview
 ================================================== */
 .listview .post .image-embed,
@@ -140,6 +120,7 @@ h2 a {
 	display: block;
 	float: left;
 	margin-right: 15px;
+	line-height: 0;
 }
 .listview .post h2 {
 	font-size: 24px;
@@ -151,25 +132,6 @@ h2 a {
 }
 .listview .thumbnail-embed + .content {
 	margin-left: 85px;
-}
-
-/* Loadmore Button
-================================================== */
-.loadmore {
-	width: 100%;
-	border: 1px solid #999;
-	text-align: center;
-	font-size: 20px;
-	font-family: "Adelle", "Georgia", "Times New Roman", serif;
-	display: block;
-	border-radius: 5px;
-	padding: 10px 0;
-	margin-bottom: 40px;
-	text-decoration: none;
-}
-.loadmore:hover {
-	border: 1px solid #333;
-	background: #f5f5f5;
 }
 
 /* Subreddit Selector

@@ -26,7 +26,7 @@
 
 	<!-- JS
 	================================================== -->
-	<script type="text/javascript" src="http://use.typekit.com/koy2okr.js"></script>
+	<script type="text/javascript" src="http://use.typekit.com/ytf8lmc.js"></script>
 	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	<script src='javascripts/jquery-1.5.1.min.js'></script>
 	<script src='javascripts/handlebars.1.0.0.beta.3.js'></script>
@@ -35,8 +35,8 @@
 	================================================== -->
 	<script id="postTemplate" type="text/x-handlebars-template">
 		<div class="post" id="{{id}}">
-			{{#hasThumbnail thumbnail}}
-				{{thumbnail}}
+			{{#hasThumbnail thumbnail url}}
+				<a href="">{{thumbnail}}</a>
 			{{/hasThumbnail}}
 			<div class="content">
 				<h2 class="remove-bottom">
@@ -79,8 +79,8 @@
 			</h1>
 			<span class="view-options">
 				<a class="fullview" data-viewtype="fullview" href="#">Fullview</a> /
-				<a class="listview" data-viewType="listview" href="#">Listview</a> /
-				<a class="gridview" data-viewType="gridview" href="#">Gridview</a>
+				<a class="listview" data-viewType="listview" href="#">Listview</a>
+				<!-- <a class="gridview" data-viewType="gridview" href="#">Gridview</a> -->
 			</span>
 			<a class="subreddit-close-button" href="">Close</a>
 		</div>
@@ -156,14 +156,13 @@
 MVP
 
 - Only scroll to the right place on back button, not on any page load
-- Get an explanation page and cookie those who haven't seen it
-- Click to comments opens in a modal
-- Link images properly everywhere
-- Keyboard navigation
 - Change cursor on grow and shrink
 - Cleanup JS and fix jenk code
 - Reconsider youtube greasemonkey cause it breaks a lot
+- Make responsive?
+- Future: Fix Keyboard navigation
 - Future: Make domain clickable
+- Future: Click to comments opens in a modal
 
  -->
 
