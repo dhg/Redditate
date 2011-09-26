@@ -15,14 +15,9 @@ body {
 	padding-top: 76px;
 	min-height: 100%;
 }
-.loading {
-	background: url(../images/loading.gif) center center no-repeat;
-}
-.loading.more {
-	background-position: 20px 96%;
-}
 .container {
-	width: 880px;
+	width: 94%;
+	max-width: 880px;
 	margin: 0 auto;
 }
 
@@ -69,8 +64,7 @@ nav .view-options a {
 	text-decoration: none;
 }
 .fullview nav .fullview,
-.listview nav .listview,
-.gridview nav .gridview {
+.listview nav .listview {
 	font-weight: bold;
 }
 
@@ -165,8 +159,8 @@ h2 a {
 	padding-top: 120px;
 }
 .subreddit-picker .one-quarter.column {
-	width: 211px;
-	margin-left: 12px;
+	width: 23%;
+	margin-left: 2%;
 	float: left;
 	margin-bottom: 30px;
 }
@@ -250,40 +244,45 @@ h2 a {
 }
 
 
-/* Modal
-================================================== */
-/*.modal {
-	background: rgba(0,0,0,.85);
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: none;
-	z-index: 10;
-	overflow: scroll;
-}
-.modal img {
-	position: absolute;
-}*/
 
+@media only screen and (max-width: 880px) {
+	.post .image-embed img {
+		max-width: 100%;
+		height: auto;
+		cursor: default;
+	}
+	iframe {
+		max-width: 100%;
+	}
+	.subreddit-picker .one-quarter.column,
+	.subreddit-picker .one-quarter.column:last-child {
+		width: 48%;
+		margin-left: 2%;
+	}
+	.subreddit-picker .one-quarter.column:nth-child(odd) {
+		margin-left: 0;
+	}
+}
+@media only screen and (max-width: 500px) {
+	body {
+		padding-top: 85px;
+	}
+	nav h1 {
+		width: 100%;
+		text-align: center;
+		float: none;
+	}
+	nav .view-options {
+		display: block;
+		width: 100%;
+		text-align: center;
+		line-height: 10px;
+		margin-bottom: 10px;
+	}
+}
+@media only screen and (max-device-width: 500px) {
+	.post .image-embed img {
+		max-height: 100000px;
+	}
+}
 
-/* iFrame Viewier
-================================================== */
-/*.frame-viewer {
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	background: #fff;
-	top: 0;
-	left: 0;
-	display: none;
-}
-.close-button {
-	position: fixed;
-	top: 10px;
-	right: 10px;
-	z-index: 20;
-	display: none;
-}
-*/

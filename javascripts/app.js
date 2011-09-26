@@ -2,10 +2,10 @@ $(document).ready(function() {
 
   //Global Vars -----------------------------------------------------
 
-  var posts = $('.posts');
-  var afterString;
-  var subdomain = gup('r');
-  var loader = $('.wash');
+  var posts = $('.posts'),
+  afterString,
+  subdomain = gup('r'),
+  loader = $('.wash');
 
 
   //Initial Load -----------------------------------------------------
@@ -14,7 +14,6 @@ $(document).ready(function() {
     $('body')
       .removeClass('fullview')
       .removeClass('listview')
-      .removeClass('gridview')
       .addClass($.cookie("viewType"));
   }
 
