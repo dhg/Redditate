@@ -1,13 +1,17 @@
 $(document).ready(function() {
 
+  // $('a').live("click", function(e) {
+  //   $.cookie('clickedPostId', $(this).closest('.post').prev().attr('id'), {expires: 1});
+  //   window.location = $(this).attr('href');
+  // });
+
   //Global Vars -----------------------------------------------------
 
   var posts = $('.posts'),
   post,
   afterString,
   subdomain = gup('r'),
-  loader = $('.wash'),
-  currentPost = 0;
+  loader = $('.wash');
 
 
   //Initial Load -----------------------------------------------------
@@ -23,6 +27,10 @@ $(document).ready(function() {
 
   // Load data
   function loadJSON() {
+    console.log($.cookie('clickedPostId'));
+    if($.cookie('clickedPostId')) {
+      afterString = $.cookie('clickedPostId');
+    }
     $.getJSON("http://www.reddit.com/"+subdomain+".json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
         renderPost(post.data);
@@ -31,7 +39,6 @@ $(document).ready(function() {
     }).complete(function() {
       loader.fadeOut(100);
       classifyImages();
-      post = $('.post')
     });
   }
 
@@ -42,7 +49,6 @@ $(document).ready(function() {
     if ($(window).scrollTop() == $(document).height() - $(window).height()){
       loader.fadeIn(100);
       loadJSON();
-      post = $('.post')
     }
   });
 
@@ -140,17 +146,6 @@ $(document).ready(function() {
     e.preventDefault();
     $('body').removeClass('subreddit-picker-open');
     $('.subreddit-picker').slideUp(250);
-  });
-
-  // Store cookie scroll position
-  $(window).scroll(function() {
-    var offsetPost = $(post[currentPost]).offset().top;
-    var offsetDoc = $(window).scrollTop()
-    var postHeight = $(post[currentPost]).height();
-    console.log(offsetPost-offsetDoc+postHeight-50, currentPost);
-    if(offsetPost-offsetDoc+postHeight-50 < 0) {
-      currentPost++
-    }
   });
 
   // Keyboard interactions
