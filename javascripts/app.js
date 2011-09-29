@@ -159,14 +159,40 @@ $(document).ready(function() {
       $('.subreddit-picker').slideUp(250);
     }
     if (evt.keyCode == 74) {
-      keyboardPost++
+      if(keyboardPost == $('.post').length-1) {
+        $("body").scrollTop($(document).height());
+      } else {
+        keyboardPost++
+        var postScrollOffset = $('.post').eq(keyboardPost).offset();
+        window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
+        console.log(keyboardPost);
+        console.log($('.post').length-1);
+      }
     }
     if (evt.keyCode == 75) {
       if(keyboardPost > 0) {
         keyboardPost--
+        var postScrollOffset = $('.post').eq(keyboardPost).offset();
+        window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
+        console.log(keyboardPost);
       }
     }
   };
+
+  $('.about-launcher').click(function(e) {
+    e.preventDefault();
+    if(!$('.about-footer').hasClass('open')) {
+      $(this).closest('.about-footer').animate({"height":"36px"}, 100, function() {
+        $('.about-footer').addClass('open');
+      });
+      $(this).css({"background-color":"#888"})
+    } else {
+      $(this).closest('.about-footer').animate({"height":"0"}, 100, function() {
+        $('.about-footer').removeClass('open');
+      });
+      $(this).css({"background-color":"#232323"})
+    }
+  })
 
   //Spinner -----------------------------------------------------
   var opts = {
