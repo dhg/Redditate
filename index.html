@@ -8,7 +8,7 @@
 	<!-- Basic Page Needs
   ================================================== -->
 	<meta charset="utf-8" />
-	<title></title>
+	<title>Reddiatate</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<!--[if lt IE 9]>
@@ -40,11 +40,11 @@
 			{{/hasThumbnail}}
 			<div class="content">
 				<h2 class="remove-bottom">
-					<a class="post-title" href="{{url}}">{{title}}</a>
+					<a class="post-title" href="{{url}}" target="_blank">{{title}}</a>
 				</h2>
 				<div class="metadata">
 					{{score}} points |
-					<a class="permalink" href="http://www.reddit.com{{permalink}}">{{num_comments}} comments</a> |
+					<a class="permalink" href="http://www.reddit.com{{permalink}}" target="_blank">{{num_comments}} comments</a> |
 					{{domain}}
 				</div>
 				{{#hasImage url}}
@@ -89,21 +89,16 @@
 			<a class="subreddit-close-button" href="">Close</a>
 		</div>
 	</nav>
-	<div class="main container">
-		<div class="posts"></div>
-		<!-- <a class="loadmore" href="#">Load 25 more</a> -->
-	</div><!-- container -->
-
-	<!-- Subreddit Menus -->
+		<!-- Subreddit Menus -->
 	<div class="subreddit-picker">
 		<div class="container">
 			<div class="one-quarter column">
 				<h2><small>keeping it</small>Fresh</h2>
 				<ul>
 					<li><a href="?r/">Top News</a></li>
-					<li><a href="?r=New">New</a></li>
+					<li><a href="?r=new">New</a></li>
 					<li><a href="?r=r/worldnews">World News</a></li>
-					<li><a href="?r=Top">Top</a></li>
+					<li><a href="?r=top">Top</a></li>
 				</ul>
 			</div>
 			<div class="one-quarter column">
@@ -136,6 +131,13 @@
 			<p class="other-subreddit-tutorial">Want to view another subreddit? Just use this fine equation:<br />www.redditate.com/?r=r/nameofthesubreddit</p>
 		</div>
 	</div>
+	<div class="main container">
+		<div class="posts"></div>
+		<div class="loadmore-button">
+			Load Next 25
+			<div id="spinner"></div>
+		</div>
+	</div><!-- container -->
 
 
 	<div class="wash">
@@ -154,11 +156,6 @@
 <!--
 
 MVP
-
-- Only scroll to the right place on back button, not on any page load
-- Cleanup JS and fix jenk code
-- Fix top and new
-- Make responsive?
 - Future: Fix Keyboard navigation
 - Future: Make domain clickable
 - Future: Click to comments opens in a modal

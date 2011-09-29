@@ -244,6 +244,36 @@ h2 a {
 }
 
 
+.loadmore-button {
+	display: none;
+	position: relative;
+	border: 1px solid #aaa;
+	background: #eee;
+	font-weight: bold;
+	text-align: center;
+	padding: 14px 0;
+	margin-bottom: 40px;
+	-webkit-border-radius: 6px;
+	   -moz-border-radius: 6px;
+	        border-radius: 6px;
+}
+.loadmore-button #spinner {
+	display: none;
+	position: absolute;
+}
+.loadmore-button.loading #spinner {
+	display: block;
+	left: 50%;
+	top: 50%;
+}
+.loadmore-button.loading #spinner > div {
+	width: 0;
+}
+.loadmore-button.loading {
+	text-indent: -9999px;
+}
+
+
 
 @media only screen and (max-width: 880px) {
 	.post .image-embed img {
@@ -265,24 +295,48 @@ h2 a {
 }
 @media only screen and (max-width: 500px) {
 	body {
-		padding-top: 85px;
+		padding-top: 95px;
 	}
 	nav h1 {
 		width: 100%;
-		text-align: center;
 		float: none;
 	}
-	nav .view-options {
+	nav .view-options,
+	.subreddit-picker-open .subreddit-close-button {
 		display: block;
 		width: 100%;
-		text-align: center;
 		line-height: 10px;
 		margin-bottom: 10px;
+	}
+	.other-subreddit-tutorial {
+		text-align: left;
+	}
+	.subreddit-picker {
+		position: relative;
+		height: auto;
+		padding-bottom: 30px;
+	}
+	.subreddit-picker .container {
+		padding-top: 30px;
+	}
+	.subreddit-picker .one-quarter.column {
+		width: 100%;
+		margin-left: 0;
 	}
 }
 @media only screen and (max-device-width: 500px) {
 	.post .image-embed img {
 		max-height: 100000px;
+	}
+}
+@media only screen and (max-device-width: 1025px) {
+	.subreddit-picker {
+		position: relative;
+		height: auto;
+		padding-bottom: 30px;
+	}
+	.loadmore-button {
+		display: block;
 	}
 }
 

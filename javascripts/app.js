@@ -1,17 +1,13 @@
 $(document).ready(function() {
 
-  // $('a').live("click", function(e) {
-  //   $.cookie('clickedPostId', $(this).closest('.post').prev().attr('id'), {expires: 1});
-  //   window.location = $(this).attr('href');
-  // });
-
   //Global Vars -----------------------------------------------------
 
   var posts = $('.posts'),
-  post,
   afterString,
   subdomain = gup('r'),
-  loader = $('.wash');
+  loader = $('.wash'),
+  loadMore = $('.loadmore-button'),
+  keyboardPost = 0;
 
 
   //Initial Load -----------------------------------------------------
@@ -27,17 +23,14 @@ $(document).ready(function() {
 
   // Load data
   function loadJSON() {
-    console.log($.cookie('clickedPostId'));
-    if($.cookie('clickedPostId')) {
-      afterString = $.cookie('clickedPostId');
-    }
-    $.getJSON("http://www.reddit.com/"+subdomain+".json?count=25&after="+afterString+"&jsonp=?", null, function(data) {
+    $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
         renderPost(post.data);
         afterString = post.data.name;
       });
     }).complete(function() {
       loader.fadeOut(100);
+      loadMore.removeClass('loading');
       classifyImages();
     });
   }
@@ -47,10 +40,21 @@ $(document).ready(function() {
   // Load more JSON
   $(window).scroll(function(){
     if ($(window).scrollTop() == $(document).height() - $(window).height()){
-      loader.fadeIn(100);
-      loadJSON();
+      if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/iPad/i)) {
+
+      } else {
+        loader.fadeIn(100);
+        loadJSON();
+      }
     }
   });
+
+  $('.loadmore-button').click(function() {
+    loader.fadeIn(100);
+    loadMore.addClass('loading')
+    loadJSON();
+  });
+
 
   //Rendering -----------------------------------------------------
 
@@ -99,7 +103,7 @@ $(document).ready(function() {
   // If thumb is real, render it
   Handlebars.registerHelper('hasThumbnail', function(thumbnail, url, fn) {
     if(thumbnail != "") {
-      return '<a class="thumbnail-embed" href="'+url+'"><img src="'+thumbnail+'" alt="" /></a>';
+      return '<a class="thumbnail-embed" href="'+url+'" target="_blank"><img src="'+thumbnail+'" alt="" /></a>';
     } else {
       return false;
     }
@@ -127,7 +131,6 @@ $(document).ready(function() {
     e.preventDefault();
     var activeClass = $(this).data('viewType');
     $('body')
-      .removeClass('gridview')
       .removeClass('listview')
       .removeClass('fullview')
       .addClass(activeClass)
@@ -155,14 +158,29 @@ $(document).ready(function() {
       $('body').removeClass('subreddit-picker-open');
       $('.subreddit-picker').slideUp(250);
     }
+    if (evt.keyCode == 74) {
+      keyboardPost++
+    }
+    if (evt.keyCode == 75) {
+      if(keyboardPost > 0) {
+        keyboardPost--
+      }
+    }
   };
 
   //Spinner -----------------------------------------------------
   var opts = {
     width: 2, // The line thickness
   };
+  var opts2 = {
+    width: 2, // The line thickness
+    radius: 6,
+    length: 4,
+  };
   var target = document.getElementById('loading');
+  var target2 = document.getElementById('spinner');
   var spinner = new Spinner(opts).spin(target);
+  var spinner2 = new Spinner(opts2).spin(target2);
 
   //Utility Functions -----------------------------------------------------
 
@@ -211,15 +229,3 @@ $(document).ready(function() {
     });
   }
 });
-
-
-
-
-//If same as previous subdomain, use the scroll position
-    // if ($.cookie("subdomain") == subdomain) {
-      // $(document).scrollTop($.cookie("scrollFromTop"));
-    // } else {
-      // $.cookie("subdomain", subdomain)
-      // $.cookie("scrollFromTop", 0);
-      // $(document).scrollTop(0);
-    // };
