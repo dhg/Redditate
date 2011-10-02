@@ -24,6 +24,8 @@ $(document).ready(function() {
 
 //Initial Load -------------------------------------------------------------------------------
 
+  window.scrollTo(0,0);
+
   // If viewType cookied, set it
   if($.cookie("viewType")) {
     $('body')
@@ -45,16 +47,16 @@ $(document).ready(function() {
         afterString = post.data.name;
       });
     }).complete(function() {
+      post = $('.post');
+      classifyImages();
       loader.fadeOut(100);
       loadMore.removeClass('loading');
-      classifyImages();
-      post = $('.post');
     });
   }
 
   $(window).scroll(function(){
     // Load more JSON from scroll
-    if ($(window).scrollTop() == $(document).height() - $(window).height()){
+    if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10){
       if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/iPad/i)) {
         //Do nothing
       } else {
@@ -191,17 +193,17 @@ $(document).ready(function() {
     }
     // "J" goes to next post
     if (evt.keyCode == 74) {
-      if(activePost == $('.post').length-1) {
-        $("body").scrollTop($(document).height());
+      if(activePost == post.length-1) {
+        $("html, body").attr({ scrollTop: $(document).height() });
       } else {
-        var postScrollOffset = $('.post').eq(activePost).offset();
+        var postScrollOffset = post.eq(activePost).offset();
         window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
       }
     }
     // "K" goes to prev post
     if (evt.keyCode == 75) {
       if(activePost > 1) {
-        var postScrollOffset = $('.post').eq(activePost-2).offset();
+        var postScrollOffset = post.eq(activePost-2).offset();
         window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
       }
     }
@@ -297,7 +299,11 @@ $(document).ready(function() {
       .removeClass('listview')
       .removeClass('fullview')
       .addClass(activeClass);
-    window.scrollTo(0,post.eq(activePost-1).offset().top);
+    if(activePost != 0) {
+      window.scrollTo(0,post.eq(activePost-1).offset().top);
+    } else {
+      window.scrollTo(0,0);
+    }
     $.cookie("viewType", null);
     $.cookie("viewType", activeClass, { expires: 100 });
   }

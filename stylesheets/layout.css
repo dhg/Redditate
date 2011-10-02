@@ -204,13 +204,14 @@ h2 a {
 	display: none;
 	font-size: 12px;
 	line-height: 15px;
+	color: #555;
 }
 .subreddit-hint a {
-	color: #555;
+	color: #777;
 	text-decoration: none;
 }
 .subreddit-hint a:hover {
-	color: #999;
+	color: #aaa;
 }
 .subreddit-picker-open .logo .subreddit,
 .subreddit-picker-open .view-options,
