@@ -1,3 +1,12 @@
+<!--
+* Redditate
+* Copyright 2011, Dave Gamache
+* www.redditate.com
+* Free to use under the MIT license.
+* http://www.opensource.org/licenses/mit-license.php
+* 10/01/2011
+-->
+
 <!doctype html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
@@ -8,9 +17,9 @@
 	<!-- Basic Page Needs
   ================================================== -->
 	<meta charset="utf-8" />
-	<title>Reddiatate</title>
+	<title>Redditate: Top News</title>
 	<meta name="description" content="">
-	<meta name="author" content="">
+	<meta name="author" content="Dave Gamache - www.davegamache.com - www.twitter.com/dhg">
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -24,12 +33,22 @@
 	<link rel="stylesheet" href="stylesheets/base.css">
 	<link rel="stylesheet" href="stylesheets/layout.css">
 
+
+	<!-- Favicon
+  ================================================== -->
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+
 	<!-- JS
 	================================================== -->
 	<script type="text/javascript" src="http://use.typekit.com/ytf8lmc.js"></script>
 	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	<script src='javascripts/jquery-1.5.1.min.js'></script>
 	<script src='javascripts/handlebars.1.0.0.beta.3.js'></script>
+
+
 
 	<!-- HTML template for post
 	================================================== -->
@@ -59,7 +78,7 @@
 	<script src='javascripts/jquery.cookie.js'></script>
 	<script src='javascripts/imagesLoaded.js'></script>
 	<script src="javascripts/spin.min.js"></script>
-	<script src="javascripts/app.js"></script>
+	<script src="javascripts/app.min.js"></script>
 
 	<!-- Favicons
 	================================================== -->
@@ -128,7 +147,14 @@
 					<li><a href="?r=r/DoesAnybodyElse">Does Anybody Else</a></li>
 				</ul>
 			</div>
-			<p class="other-subreddit-tutorial">Want to view another subreddit? Just use this fine equation:<br />www.redditate.com/?r=r/nameofthesubreddit</p>
+			<div class="subreddit-hint">
+				<p>Shortcuts: j = next post, k = previous post, z = zoom image, <br />enter = open post, c = comments, f = fullview, l = listview</p>
+				<p>Want to view another subreddit? Just use this fine equation:<br />www.redditate.com/?r=r/nameofthesubreddit</p>
+				<p>Created by Dave Gamache, &copy; 2011. <br/><a href="http://www.davegamache.com" target="_blank">davegamache.com</a> / <a href="http://www.twitter.com/dhg" target="_blank">@dhg</a></p>
+				<div class="down-carrot-wrapper">
+					<div class="down-carrot"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="main container">
@@ -137,14 +163,6 @@
 			Load Next 25
 			<div id="spinner"></div>
 		</div>
-	</div><!-- container -->
-
-	<div class="about-footer">
-		<a class="about-launcher" href="#">
-			<span class="open-footer">i</span>
-			<span class="close-footer">&times;</span>
-		</a>
-		<p><strong>Created by <a href="http://www.twitter.com/dhg">Dave Gamache</a> &middot;</strong> Keyboard navigation:</strong> J = next, K = previous</p>
 	</div>
 
 	<div class="wash">
@@ -161,10 +179,8 @@
 
 
 <!--
-
-MVP
-- Future: Fix Keyboard navigation
+- Get a tiny carrot next to the current post
+- Browser test
 - Future: Make domain clickable
 - Future: Click to comments opens in a modal
-
  -->

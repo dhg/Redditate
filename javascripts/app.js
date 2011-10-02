@@ -1,17 +1,30 @@
+/*
+* Redditate
+* Copyright 2011, Dave Gamache
+* www.redditate.com
+* Free to use under the MIT license.
+* http://www.opensource.org/licenses/mit-license.php
+* 10/01/2011
+*/
+
 $(document).ready(function() {
 
   //Global Vars -----------------------------------------------------
 
   var posts = $('.posts'),
   afterString,
-  subdomain = gup('r'),
+  subdomain = readParams('r'),
   loader = $('.wash'),
   loadMore = $('.loadmore-button'),
-  keyboardPost = 0;
+  activePost = 0,
+  post,
+  subredditHint = $('.subreddit-hint p'),
+  hintIndex = 0;
 
 
-  //Initial Load -----------------------------------------------------
+//Initial Load -------------------------------------------------------------------------------
 
+  // If viewType cookied, set it
   if($.cookie("viewType")) {
     $('body')
       .removeClass('fullview')
@@ -19,7 +32,10 @@ $(document).ready(function() {
       .addClass($.cookie("viewType"));
   }
 
-  //JSON -----------------------------------------------------
+  //Initial JSON load
+  loadJSON();
+
+  //JSON -------------------------------------------------------------------------------
 
   // Load data
   function loadJSON() {
@@ -32,31 +48,40 @@ $(document).ready(function() {
       loader.fadeOut(100);
       loadMore.removeClass('loading');
       classifyImages();
+      post = $('.post');
     });
   }
 
-  loadJSON();
-
-  // Load more JSON
   $(window).scroll(function(){
+    // Load more JSON from scroll
     if ($(window).scrollTop() == $(document).height() - $(window).height()){
       if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/iPad/i)) {
-
+        //Do nothing
       } else {
         loader.fadeIn(100);
         loadJSON();
       }
     }
+    //Control activePost value based on scroll position
+    if($(document).scrollTop() > (post.eq(activePost).offset().top-90)) {
+      activePost++
+    }
+    if($(document).scrollTop() < (post.eq(activePost-1).offset().top-90)) {
+      if(activePost-1 > 0) {
+        activePost--
+      }
+    }
+    // console.log("activePost: "+activePost+", documentScrollTop: "+$(document).scrollTop()+", activePost offset top: "+(post.eq(activePost).offset().top-90))
   });
 
+  // Load more JSON from click (tablet/mobile)
   $('.loadmore-button').click(function() {
     loader.fadeIn(100);
     loadMore.addClass('loading')
     loadJSON();
   });
 
-
-  //Rendering -----------------------------------------------------
+  //Rendering -------------------------------------------------------------------------------
 
   // Render Post with Handlebars
   function renderPost(postData) {
@@ -66,14 +91,20 @@ $(document).ready(function() {
     posts.append(postHTML);
   }
 
+  //Create readable title from ?r= subdomain value
   if(!subdomain == "") {
     var readableSubdomain = subdomain.replace("r/", "")
     $('.logo .subreddit .title').text(readableSubdomain);
+    document.title = "Redditate: "+readableSubdomain;
   }
 
-  // If image is real, render it
+
+  // Template Helpers -------------------------------------------------------------------------------
+
+  // IMAGE: Rendering fullsize images
   Handlebars.registerHelper('hasImage', function(url, fn) {
     var isImgur = (/imgur*/).test(url);
+    // Fix broken imgur links
     if(isImgur) {
       if(isImage(url)) {
         // do nothing
@@ -88,7 +119,7 @@ $(document).ready(function() {
     }
   });
 
-  // If embedded video is real, render it
+  // YOUTUBE: If embedded video is real, render it
   Handlebars.registerHelper('hasYoutube', function(url, fn) {
     if(isYoutube(url)) {
       youtubeID = url.replace(/^[^v]+v.(.{11}).*/,"$1");
@@ -100,7 +131,7 @@ $(document).ready(function() {
     }
   });
 
-  // If thumb is real, render it
+  // LISTVIEW THUMBNAIL: If thumb is real, render it
   Handlebars.registerHelper('hasThumbnail', function(thumbnail, url, fn) {
     if(thumbnail != "") {
       return '<a class="thumbnail-embed" href="'+url+'" target="_blank"><img src="'+thumbnail+'" alt="" /></a>';
@@ -110,108 +141,99 @@ $(document).ready(function() {
   });
 
 
-  //Interactions -----------------------------------------------------
+  //Interactions -------------------------------------------------------------------------------
 
   // Image fullsize on click
   $('.post .image-embed').live('click', function(e) {
     e.preventDefault();
-    if($(this).children('img').hasClass('fullwidth')) {
-      // Determine if image is above offscreen and if so, make it at top of shrink
-      var postParentPosition = $(this).children('img').offset();
-      if(postParentPosition.top < $(window).scrollTop()) {
-        window.scrollTo(postParentPosition.left, (postParentPosition.top - $('nav').height() - 10));
-      }
-    }
-    // Toggle fullwidth class
-    $(this).children('img').toggleClass('fullwidth');
+    resizeImage($(this));
   });
 
   // Toggling grid/list/full view
   $('.view-options a').click(function(e) {
     e.preventDefault();
-    var activeClass = $(this).data('viewType');
-    $('body')
-      .removeClass('listview')
-      .removeClass('fullview')
-      .addClass(activeClass)
-    window.scrollTo(0,0);
-    $.cookie("viewType", null);
-    $.cookie("viewType", activeClass, { expires: 100 });
+    setupViewtype($(this));
   });
 
   // Open Subreddit Picker
   $('.subreddit').click(function(e) {
     e.preventDefault();
-    $('body').addClass('subreddit-picker-open');
-    $('.subreddit-picker').slideDown(250);
+    openSubredditPicker();
   });
   $('.subreddit-close-button').click(function(e) {
     e.preventDefault();
-    $('body').removeClass('subreddit-picker-open');
-    $('.subreddit-picker').slideUp(250);
+    closeSubredditPicker();
   });
+  $('.subreddit-heading').click(function(e) {
+    e.preventDefault();
+    closeSubredditPicker();
+  });
+
+  //Cycling hints
+  subredditHint.eq(hintIndex).show();
+  $('.down-carrot-wrapper').click(function() {
+    subredditHint.hide();
+    if(hintIndex < subredditHint.length-1) {
+      hintIndex++
+      subredditHint.eq(hintIndex).show();
+    } else {
+      hintIndex = 0;
+      subredditHint.eq(hintIndex).show();
+    }
+  })
 
   // Keyboard interactions
   document.onkeydown = function(evt) {
     evt = evt || window.event;
+    // Esc close of subreddit picker
     if (evt.keyCode == 27) {
-      $('body').removeClass('subreddit-picker-open');
-      $('.subreddit-picker').slideUp(250);
+      closeSubredditPicker();
     }
+    // "J" goes to next post
     if (evt.keyCode == 74) {
-      if(keyboardPost == $('.post').length-1) {
+      if(activePost == $('.post').length-1) {
         $("body").scrollTop($(document).height());
       } else {
-        keyboardPost++
-        var postScrollOffset = $('.post').eq(keyboardPost).offset();
+        var postScrollOffset = $('.post').eq(activePost).offset();
         window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
-        console.log(keyboardPost);
-        console.log($('.post').length-1);
       }
     }
+    // "K" goes to prev post
     if (evt.keyCode == 75) {
-      if(keyboardPost > 0) {
-        keyboardPost--
-        var postScrollOffset = $('.post').eq(keyboardPost).offset();
+      if(activePost > 1) {
+        var postScrollOffset = $('.post').eq(activePost-2).offset();
         window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
-        console.log(keyboardPost);
       }
     }
-  };
-
-  $('.about-launcher').click(function(e) {
-    e.preventDefault();
-    if(!$('.about-footer').hasClass('open')) {
-      $(this).closest('.about-footer').animate({"height":"36px"}, 100, function() {
-        $('.about-footer').addClass('open');
-      });
-      $(this).css({"background-color":"#888"})
-    } else {
-      $(this).closest('.about-footer').animate({"height":"0"}, 100, function() {
-        $('.about-footer').removeClass('open');
-      });
-      $(this).css({"background-color":"#232323"})
+    // "F" changes to fullview
+    if (evt.keyCode == 70) {
+      setupViewtype($('a.fullview'));
     }
-  })
-
-  //Spinner -----------------------------------------------------
-  var opts = {
-    width: 2, // The line thickness
+    // "L" changes to listview
+    if (evt.keyCode == 76) {
+      setupViewtype($('a.listview'));
+    }
+    // "Z" zooms on image in post if there is one
+    if (evt.keyCode == 90) {
+      resizeImage(post.eq(activePost-1).find('.image-embed'));
+    }
+    // "C" zooms on image in post if there is one
+    if (evt.keyCode == 67) {
+      var permalink = post.eq(activePost-1).find('.permalink').attr('href')
+      window.open(permalink,'_newtab');
+    }
+    // Enter opens to current post
+    if (evt.keyCode == 13) {
+      var postLink = post.eq(activePost-1).find('.post-title').attr('href');
+      window.open(postLink,'_newtab');
+    }
   };
-  var opts2 = {
-    width: 2, // The line thickness
-    radius: 6,
-    length: 4,
-  };
-  var target = document.getElementById('loading');
-  var target2 = document.getElementById('spinner');
-  var spinner = new Spinner(opts).spin(target);
-  var spinner2 = new Spinner(opts2).spin(target2);
 
-  //Utility Functions -----------------------------------------------------
+
+  //Utility Functions -------------------------------------------------------------------------------
 
   // Read URL to get params
-  function gup(name) {
+  function readParams(name) {
     name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
     var regexS = "[\\?&]"+name+"=([^&#]*)";
     var regex = new RegExp( regexS );
@@ -254,4 +276,56 @@ $(document).ready(function() {
       })
     });
   }
+
+  // Resize fullview inlined image
+  function resizeImage(clickTarget) {
+    if(clickTarget.children('img').hasClass('fullwidth')) {
+      // Determine if image is above offscreen and if so, make it at top of shrink
+      var postParentPosition = clickTarget.children('img').offset();
+      if(postParentPosition.top < $(window).scrollTop()) {
+        window.scrollTo(postParentPosition.left, (postParentPosition.top - $('nav').height() - 10));
+      }
+    }
+    // Toggle fullwidth class
+    clickTarget.children('img').toggleClass('fullwidth');
+  }
+
+  //Set and cookie the viewType (fullview/listview)
+  function setupViewtype(viewClick) {
+    var activeClass = viewClick.data('viewType');
+    $('body')
+      .removeClass('listview')
+      .removeClass('fullview')
+      .addClass(activeClass);
+    window.scrollTo(0,post.eq(activePost-1).offset().top);
+    $.cookie("viewType", null);
+    $.cookie("viewType", activeClass, { expires: 100 });
+  }
+
+  // Open picker
+  function openSubredditPicker() {
+    $('body').addClass('subreddit-picker-open');
+    $('.subreddit-picker').slideDown(250);
+  }
+
+  // Close picker
+  function closeSubredditPicker() {
+    $('body').removeClass('subreddit-picker-open');
+    $('.subreddit-picker').slideUp(250);
+  }
+
+  //Spinner -------------------------------------------------------------------------------
+  var optsWash = {
+    width: 2 // The line thickness
+  },
+  optsButton = {
+    width: 2, // The line thickness
+    radius: 6,
+    length: 4
+  },
+  targetWash = document.getElementById('loading'),
+  targetButton = document.getElementById('spinner'),
+  spinnerWash = new Spinner(optsWash).spin(targetWash),
+  spinnerButton = new Spinner(optsButton).spin(targetButton);
+
 });
