@@ -7,7 +7,39 @@
 * 10/01/2011
 */
 
+
+// TEXT CHANGE TEMPORARILY HERE FOR DUMMY SIGN IN
+
+/*
+ * jQuery TextChange Plugin
+ * http://www.zurb.com/playground/jquery-text-change-custom-event
+ *
+ * Copyright 2010, ZURB
+ * Released under the MIT License
+ */
+ (function(a){a.event.special.textchange={setup:function(){a(this).data("lastValue",this.contentEditable==="true"?a(this).html():a(this).val());a(this).bind("keyup.textchange",a.event.special.textchange.handler);a(this).bind("cut.textchange paste.textchange input.textchange",a.event.special.textchange.delayedHandler)},teardown:function(){a(this).unbind(".textchange")},handler:function(){a.event.special.textchange.triggerIfChanged(a(this))},delayedHandler:function(){var c=a(this);setTimeout(function(){a.event.special.textchange.triggerIfChanged(c)},
+ 25)},triggerIfChanged:function(a){var b=a[0].contentEditable==="true"?a.html():a.val();b!==a.data("lastValue")&&(a.trigger("textchange",[a.data("lastValue")]),a.data("lastValue",b))}};a.event.special.hastext={setup:function(){a(this).bind("textchange",a.event.special.hastext.handler)},teardown:function(){a(this).unbind("textchange",a.event.special.hastext.handler)},handler:function(c,b){b===""&&b!==a(this).val()&&a(this).trigger("hastext")}};a.event.special.notext={setup:function(){a(this).bind("textchange",
+ a.event.special.notext.handler)},teardown:function(){a(this).unbind("textchange",a.event.special.notext.handler)},handler:function(c,b){a(this).val()===""&&a(this).val()!==b&&a(this).trigger("notext")}}})(jQuery);
+
+
 $(document).ready(function() {
+
+  if($.cookie("passwordEntered")) {
+    $('.pw-wash').remove();
+    loadSite();
+  } else {
+    $('#pw-holder').bind('textchange', function (event, previousText) {
+      if($(this).val() == "betastyle") {
+        $('.pw-wash').fadeOut(function() {
+          $(this).remove();
+          $.cookie("passwordEntered", true, { expires: 100 });
+          loadSite();
+        });
+      }
+    });
+  }
+
+function loadSite() {
 
   //Global Vars -----------------------------------------------------
 
@@ -41,6 +73,7 @@ $(document).ready(function() {
 
   // Load data
   function loadJSON() {
+    console.log("laoding")
     $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
         renderPost(post.data);
@@ -333,5 +366,7 @@ $(document).ready(function() {
   targetButton = document.getElementById('spinner'),
   spinnerWash = new Spinner(optsWash).spin(targetWash),
   spinnerButton = new Spinner(optsButton).spin(targetButton);
+
+} //closing load site
 
 });
