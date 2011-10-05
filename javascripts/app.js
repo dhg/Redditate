@@ -51,7 +51,8 @@ function loadSite() {
   activePost = 0,
   post,
   subredditHint = $('.subreddit-hint p'),
-  hintIndex = 0;
+  hintIndex = 0,
+  lock = false;
 
 
 //Initial Load -------------------------------------------------------------------------------
@@ -73,7 +74,6 @@ function loadSite() {
 
   // Load data
   function loadJSON() {
-    console.log("laoding")
     $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
         renderPost(post.data);
@@ -84,6 +84,7 @@ function loadSite() {
       classifyImages();
       loader.fadeOut(100);
       loadMore.removeClass('loading');
+      lock = false;
     });
   }
 
@@ -93,8 +94,11 @@ function loadSite() {
       if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/iPad/i)) {
         //Do nothing
       } else {
-        loader.fadeIn(100);
-        loadJSON();
+        if(lock == false) {
+          lock = true;
+          loader.fadeIn(100);
+          loadJSON();
+        }
       }
     }
     //Control activePost value based on scroll position
@@ -111,9 +115,11 @@ function loadSite() {
 
   // Load more JSON from click (tablet/mobile)
   $('.loadmore-button').click(function() {
-    loader.fadeIn(100);
-    loadMore.addClass('loading')
-    loadJSON();
+    if(lock == false) {
+      loader.fadeIn(100);
+      loadMore.addClass('loading')
+      loadJSON();
+    }
   });
 
   //Rendering -------------------------------------------------------------------------------
