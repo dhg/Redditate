@@ -13,7 +13,7 @@ I effin love browsing Reddit, but I wish I had a way to browse it that was a bit
 Want to use it yourself?
 -----
 
-Just go to [www.redditate.com](http://www.redditate.com). Are you a super nerd who wants their own copy?! Download the codebase here, open the index.html file and enjoy (no server needed).
+Just go to [www.redditate.com](http://www.redditate.com). Are you a super nerd who wants their own copy?! Download the codebase here on Github, open the index.html file and enjoy (no server needed).
 
 
 What works right now?
