@@ -284,8 +284,10 @@ $(document).ready(function() {
 
   //Determine is this is a youtube video
   function isYoutube(str){
-    var result = str.indexOf('youtube');
-    if (result != -1) {
+    var urlResult = str.indexOf('youtube');
+    // Doesn't link to youtubes that aren't videos
+    var videoResult = str.indexOf('watch');
+    if (urlResult != -1 && videoResult != -1) {
       return true;
     } else {
       return false;
