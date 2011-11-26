@@ -121,6 +121,11 @@ $(document).ready(function() {
       } else {
         url += ".jpg"
       }
+    } else {
+      var isQuickMeme = (/(?:qkme\.me|quickmeme\.com\/meme)\/(\w*)/).exec(url);
+      if (isQuickMeme !== null) {
+        url = "http://i.qkme.me/" + isQuickMeme[1] + ".jpg";
+      }
     }
     if(isImage(url)) {
       return '<a class="image-embed"><img src="'+url+'" alt="" /></a>';
