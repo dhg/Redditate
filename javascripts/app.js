@@ -284,7 +284,7 @@ $(document).ready(function() {
  $('.subreddit-input input').keydown(function(e){
   if(e.keyCode == 13) {
     e.preventDefault();
-    window.location.href = "http://www." + window.location.hostname + ".com/?r=r/" + $('.subreddit-input input').val();
+    window.location.href = "http://www." + window.location.hostname + "/?r=r/" + $('.subreddit-input input').val();
   }
 });
 
