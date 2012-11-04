@@ -22,7 +22,8 @@ $(document).ready(function() {
   subredditHint = $('.subreddit-hint p'),
   hintIndex = 0,
   lock = false,
-  commandDown = false;
+  commandDown = false,
+  subredditShortcutJustLaunched = false;
 
 
 //Initial Load -------------------------------------------------------------------------------
@@ -204,48 +205,57 @@ $(document).ready(function() {
     if(commandDown == false) {
       if (evt.keyCode == 27) {
         closeSubredditPicker();
-      }
-      // "J" goes to next post
-      if (evt.keyCode == 74) {
-        if(activePost == post.length-1) {
-          $("html, body").attr({ scrollTop: $(document).height() });
-        } else {
-          var postScrollOffset = post.eq(activePost).offset();
-          window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
-        }
-      }
-      // "K" goes to prev post
-      if (evt.keyCode == 75) {
-        if(activePost > 1) {
-          var postScrollOffset = post.eq(activePost-2).offset();
-          window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
-        }
-      }
-      // "F" changes to fullview
-      if (evt.keyCode == 70) {
-        setupViewtype($('a.fullview'));
-      }
-      // "L" changes to listview
-      if (evt.keyCode == 76) {
-        setupViewtype($('a.listview'));
-      }
-      // "Z" zooms on image in post if there is one
-      if (evt.keyCode == 90) {
-        resizeImage(post.eq(activePost-1).find('.image-embed'));
-      }
-      // "C" zooms on image in post if there is one
-      if (evt.keyCode == 67) {
-        var permalink = post.eq(activePost-1).find('.permalink').attr('href')
-        window.open(permalink,'_newtab');
-      }
-      // Enter opens to current post
-      if (evt.keyCode == 13) {
-        var postLink = post.eq(activePost-1).find('.post-title').attr('href');
-        window.open(postLink,'_newtab');
+        $('.subreddit-shortcut').removeClass('visible');
+        $('.subreddit-input input').removeClass('visible')
       }
       // Command key fix
       if (evt.keyCode == 91) {
         commandDown = true;
+      }
+      if (!$('.subreddit-shortcut').hasClass('visible')) {
+        // "J" goes to next post
+        if (evt.keyCode == 74) {
+          if(activePost == post.length-1) {
+            $("html, body").attr({ scrollTop: $(document).height() });
+          } else {
+            var postScrollOffset = post.eq(activePost).offset();
+            window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
+          }
+        }
+        // "K" goes to prev post
+        if (evt.keyCode == 75) {
+          if(activePost > 1) {
+            var postScrollOffset = post.eq(activePost-2).offset();
+            window.scrollTo(postScrollOffset.left, postScrollOffset.top - $('nav').height() - 10)
+          }
+        }
+        // "F" changes to fullview
+        if (evt.keyCode == 70) {
+          setupViewtype($('a.fullview'));
+        }
+        // "L" changes to listview
+        if (evt.keyCode == 76) {
+          setupViewtype($('a.listview'));
+        }
+        // "Z" zooms on image in post if there is one
+        if (evt.keyCode == 90) {
+          resizeImage(post.eq(activePost-1).find('.image-embed'));
+        }
+        // "C" zooms on image in post if there is one
+        if (evt.keyCode == 67) {
+          var permalink = post.eq(activePost-1).find('.permalink').attr('href')
+          window.open(permalink,'_newtab');
+        }
+        // "R" launches the subreddit prompt
+        if (evt.keyCode == 82) {
+          $('.subreddit-shortcut').addClass('visible')
+          subredditShortcutJustLaunched = true;
+        }
+        // Enter opens to current post
+        if (evt.keyCode == 13) {
+          var postLink = post.eq(activePost-1).find('.post-title').attr('href');
+          window.open(postLink,'_newtab');
+        }
       }
     }
   };
@@ -256,11 +266,27 @@ $(document).ready(function() {
     if (evt.keyCode == 91) {
       commandDown = false;
     }
+    if (evt.keyCode == 82) {
+      if(subredditShortcutJustLaunched) {
+        $('.subreddit-input input')
+          .val("")
+          .addClass('visible')
+          .focus();
+        subredditShortcutJustLaunched = false;
+      }
+    }
   }
 
   $(window).blur(function() {
     commandDown = false;
   })
+
+ $('.subreddit-input input').keydown(function(e){
+  if(e.keyCode == 13) {
+    e.preventDefault();
+    window.location.href = "http://www." + window.location.hostname + ".com/?r=r/" + $('.subreddit-input input').val();
+  }
+});
 
 
   //Utility Functions -------------------------------------------------------------------------------
