@@ -64,7 +64,7 @@
 				<div class="metadata">
 					{{score}} points |
 					<a class="permalink" href="http://www.reddit.com{{permalink}}" target="_blank">{{num_comments}} comments</a> |
-					{{domain}}
+					<a href="/?r=domain/{{domain}}">{{domain}}</a>
 				</div>
 				{{#hasImage url}}
 					{{url}}
@@ -150,8 +150,9 @@
 			<div class="subreddit-hint">
 				<p>Shortcuts: j = next post, k = previous post, z = zoom image, <br />enter = open post, c = comments, f = fullview, l = listview</p>
 				<p>Want to view another subreddit? Just use this fine equation:<br />www.redditate.com/?r=r/nameofthesubreddit</p>
+				<p>Want to view a domain? Just use this fine equation:<br />www.redditate.com/?r=domain/domain.com</p>
 				<p>Created by Dave Gamache, &copy; 2011. <br/><a href="http://www.davegamache.com" target="_blank">davegamache.com</a> / <a href="http://www.twitter.com/dhg" target="_blank">@dhg</a></p>
-				<p>Redditate proudly rocks the base CSS of <a href="http://www.getskeleton.com">Skeleton</a>,<br /> the responsive, grid &amp; boilerplate</a></p>
+				<p>Redditate proudly rocks the base CSS of <a href="http://www.getskeleton.com">Skeleton</a>,<br /> the responsive, grid &amp; boilerplate</p>
 				<div class="down-carrot-wrapper">
 					<div class="down-carrot"></div>
 				</div>
@@ -173,7 +174,7 @@
 	<form class="subreddit-shortcut">
 		<fieldset class="subreddit-input">
 			<label>r/</label>
-			<input type="text"></input>
+			<input type="text"/>
 		</fieldset>
 	</form>
 
@@ -217,6 +218,5 @@
 <!--
 - Get a tiny carrot next to the current post
 - Browser test
-- Future: Make domain clickable
 - Future: Click to comments opens in a modal
  -->
