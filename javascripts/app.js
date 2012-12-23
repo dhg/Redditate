@@ -117,6 +117,12 @@ $(document).ready(function() {
     var isImgur = (/imgur*/).test(url);
     // Fix broken imgur links
     if(isImgur) {
+
+      // If it's an imgur album return false
+      if (url.indexOf('imgur.com/a/') >= 0) {
+        return false;
+      }
+
       if(isImage(url)) {
         // do nothing
       } else {
@@ -156,6 +162,12 @@ $(document).ready(function() {
     }
   });
 
+  Handlebars.registerHelper('isAlbum', function(url, fn) {
+    // If it's an imgur album return false
+    if (url.indexOf('imgur.com/a/') >= 0) {
+      return ' (album)';
+    }
+  });
 
   //Interactions -------------------------------------------------------------------------------
 
