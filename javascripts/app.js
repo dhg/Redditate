@@ -23,7 +23,8 @@ $(document).ready(function() {
   hintIndex = 0,
   lock = false,
   commandDown = false,
-  subredditShortcutJustLaunched = false;
+  subredditShortcutJustLaunched = false,
+  loadedPosts = [];
 
 
 //Initial Load -------------------------------------------------------------------------------
@@ -47,8 +48,11 @@ $(document).ready(function() {
   function loadJSON() {
     $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
-        renderPost(post.data);
+        //If the post wasn't loaded before, render it.
+        if(loadedPosts.indexOf(post.data.id) < 0) renderPost(post.data);
         afterString = post.data.name;
+        //Save the post id.
+        loadedPosts.push(post.data.id);
       });
     }).complete(function() {
       post = $('.post');
