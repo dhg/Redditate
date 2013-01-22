@@ -77,6 +77,15 @@
 			</div>
 		</div>
 	</script>
+	<script id="imgurAlbumTemplate" type="text/x-handlebars-template">
+		<div class="imgur-album">
+			<ul>
+				{{#each images}}
+					<li><img src="{{links.large_thumbnail}}" height="{{image.height}}" width="{{image.width}}" alt="{{image.title}}"></li>
+				{{/each}}
+			</ul>
+		</div>
+	</script>
 	<script src='javascripts/jquery.cookie.js'></script>
 	<script src='javascripts/imagesLoaded.js'></script>
 	<script src="javascripts/spin.min.js"></script>

@@ -108,6 +108,21 @@ h2 a {
 	font-weight: 300;
 }
 
+/* Album
+================================================== */
+.imgur-album {
+	overflow-x: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+.imgur-album ul {
+	width: 1000%;
+}
+
+.imgur-album li {
+	float: left;
+}
+
 /* Listview
 ================================================== */
 .listview .post .image-embed,

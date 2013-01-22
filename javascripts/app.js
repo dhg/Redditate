@@ -120,9 +120,16 @@ $(document).ready(function() {
 
     $.getJSON(albumUrl, function(json, textStatus) {
 
-      albumPreviewUrl = 'http://i.imgur.com/'+json.album.images[0].image.hash+'.jpg';      
+      console.log(json);
 
-      $('#' + postData.name).find('img').attr('src', albumPreviewUrl);
+      console.log();
+      
+
+      var albumTemplateSource = $("#imgurAlbumTemplate").html(),
+          albumTemplate = Handlebars.compile(albumTemplateSource),
+          albumHTML = albumTemplate(json.album);   
+
+      $('#' + postData.name).find('.image-embed').html(albumHTML);
 
     });
 
