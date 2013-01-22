@@ -96,43 +96,36 @@ $(document).ready(function() {
 
   // Render Post with Handlebars
   function renderPost(postData) {
+    var templateSource   = $("#postTemplate").html(),
+        postTemplate = Handlebars.compile(templateSource);
+        postHTML = postTemplate(postData);
+
+    // If it's an imgur album make a request to the imgur API
     if (postData.url.indexOf('imgur.com/a/') >= 0) {
-
-      console.log('true');
+      fetchImgurAlbum(postData);
+      console.log('album');
       
+    } 
 
-      console.log(postData.url);
-      
-      var pathArray = postData.url.split( '/' ),
-          hash = pathArray[4],
-          albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
-
-          console.log(hash);
-
-      $.getJSON(albumUrl, function(json, textStatus) {
-
-        postData.url = 'http://i.imgur.com/'+json.album.images[0].image.hash+'.jpg';
-
-        console.log(postData);
-        
-
-        var templateSource = $("#postTemplate").html(),
-            postTemplate = Handlebars.compile(templateSource);
-            postHTML = postTemplate(postData);
-
-        posts.append(postHTML);
-
-      });
-
-
-    } else {
-      console.log('false');
-      
-      var templateSource   = $("#postTemplate").html(),
-          postTemplate = Handlebars.compile(templateSource);
-          postHTML = postTemplate(postData);
       posts.append(postHTML);
-    }
+      
+  }
+
+  function fetchImgurAlbum(postData) {
+    var pathArray = postData.url.split( '/' ),
+        hash = pathArray[4],
+        albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
+
+    console.log(hash);
+
+    $.getJSON(albumUrl, function(json, textStatus) {
+
+      albumPreviewUrl = 'http://i.imgur.com/'+json.album.images[0].image.hash+'.jpg';      
+
+      $('#' + postData.name).find('img').attr('src', albumPreviewUrl);
+
+    });
+
   }
 
   //Create readable title from ?r= subdomain value
@@ -149,10 +142,6 @@ $(document).ready(function() {
   Handlebars.registerHelper('hasImage', function(url, fn) {
     var isImgur = (/imgur*/).test(url);
 
-    
-    
-
-    // If it's an imgur album make a request to the imgur API
     if(isImgur) {
 
       if(isImage(url)) {
