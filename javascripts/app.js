@@ -96,10 +96,43 @@ $(document).ready(function() {
 
   // Render Post with Handlebars
   function renderPost(postData) {
-    var templateSource   = $("#postTemplate").html();
-    var postTemplate = Handlebars.compile(templateSource);
-    var postHTML = postTemplate(postData);
-    posts.append(postHTML);
+    if (postData.url.indexOf('imgur.com/a/') >= 0) {
+
+      console.log('true');
+      
+
+      console.log(postData.url);
+      
+      var pathArray = postData.url.split( '/' ),
+          hash = pathArray[4],
+          albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
+
+          console.log(hash);
+
+      $.getJSON(albumUrl, function(json, textStatus) {
+
+        postData.url = 'http://i.imgur.com/'+json.album.images[0].image.hash+'.jpg';
+
+        console.log(postData);
+        
+
+        var templateSource = $("#postTemplate").html(),
+            postTemplate = Handlebars.compile(templateSource);
+            postHTML = postTemplate(postData);
+
+        posts.append(postHTML);
+
+      });
+
+
+    } else {
+      console.log('false');
+      
+      var templateSource   = $("#postTemplate").html(),
+          postTemplate = Handlebars.compile(templateSource);
+          postHTML = postTemplate(postData);
+      posts.append(postHTML);
+    }
   }
 
   //Create readable title from ?r= subdomain value
@@ -115,13 +148,12 @@ $(document).ready(function() {
   // IMAGE: Rendering fullsize images
   Handlebars.registerHelper('hasImage', function(url, fn) {
     var isImgur = (/imgur*/).test(url);
-    // Fix broken imgur links
-    if(isImgur) {
 
-      // If it's an imgur album return false
-      if (url.indexOf('imgur.com/a/') >= 0) {
-        return false;
-      }
+    
+    
+
+    // If it's an imgur album make a request to the imgur API
+    if(isImgur) {
 
       if(isImage(url)) {
         // do nothing
@@ -136,9 +168,7 @@ $(document).ready(function() {
     }
     if(isImage(url)) {
       return '<a class="image-embed"><img src="'+url+'" alt="" /></a>';
-    } else {
-      return false;
-    }
+    } 
   });
 
   // YOUTUBE: If embedded video is real, render it
@@ -162,12 +192,12 @@ $(document).ready(function() {
     }
   });
 
-  Handlebars.registerHelper('isAlbum', function(url, fn) {
-    // If it's an imgur album return false
-    if (url.indexOf('imgur.com/a/') >= 0) {
-      return ' (album)';
-    }
-  });
+  // Handlebars.registerHelper('isAlbum', function(url, fn) {
+  //   // If it's an imgur album return false
+  //   if (url.indexOf('imgur.com/a/') >= 0) {
+  //     return ' (album)';
+  //   }
+  // });
 
   //Interactions -------------------------------------------------------------------------------
 
