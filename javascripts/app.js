@@ -111,54 +111,63 @@ $(document).ready(function() {
       
   }
 
+  // Hit the imgur API for some sweet json
   function fetchImgurAlbum(postData) {
     var pathArray = postData.url.split( '/' ),
         hash = pathArray[4],
         albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json',
-        maxWidth = $('.main').width(),
+        previewImage = {
+          album: {
+            images: []
+          }
+        },
         self = this;
 
     console.log(hash);
 
     $.getJSON(albumUrl, function(json, textStatus) {
 
-      console.log(json);
+      // console.log(json);
 
-     
-      json.album.containerWidth = 0;
+      // console.log(json.album.images[0]);
       
 
+      previewImage.album.images.push(json.album.images[0]);
 
-      $.each(json.album.images, function(index, val) {
-
-        console.log(val);
+      // console.log(previewImage);
       
-        json.album.images[index].image.position = index + 1;
-        json.album.images[index].image.imageLength = json.album.images.length;
-        json.album.containerWidth += val.image.width;
-        json.album.maxWidth = self.maxWidth;
-      });
-
-      console.log(json);
       
-
-       var albumTemplateSource = $("#imgurAlbumTemplate").html(),
-          albumTemplate = Handlebars.compile(albumTemplateSource),
-          albumHTML = albumTemplate(json.album);
-      
-
-      $('#' + postData.name).find('.image-embed').html(albumHTML);
-
+      renderAlbum(postData, previewImage);
+       
     });
 
   }
 
+  // render a preview (1st) image of the imgur album
   function renderAlbumPreview() {
 
   }
 
-  function renderAlbum() {
+  // render the full imgur album
+  function renderAlbum(postData, previewImage) {
+
+    console.log('post data:', postData);
     
+    $.each(previewImage.album.images, function(index, val) {
+
+      // console.log(val);
+    
+      // json.album.images[index].image.position = index + 1;
+      // json.album.images[index].image.imageLength = json.album.images.length;
+      
+    });
+
+    var albumTemplateSource = $("#imgurAlbumTemplate").html(),
+        albumTemplate = Handlebars.compile(albumTemplateSource),
+        albumHTML = albumTemplate(previewImage.album);
+      
+
+    $('#' + postData.name).find('.image-embed').html(albumHTML);
   }
 
   //Create readable title from ?r= subdomain value
