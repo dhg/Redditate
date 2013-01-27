@@ -114,7 +114,9 @@ $(document).ready(function() {
   function fetchImgurAlbum(postData) {
     var pathArray = postData.url.split( '/' ),
         hash = pathArray[4],
-        albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
+        albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json',
+        maxWidth = $('.main').width(),
+        self = this;
 
     console.log(hash);
 
@@ -122,17 +124,41 @@ $(document).ready(function() {
 
       console.log(json);
 
-      console.log();
+     
+      json.album.containerWidth = 0;
       
 
-      var albumTemplateSource = $("#imgurAlbumTemplate").html(),
+
+      $.each(json.album.images, function(index, val) {
+
+        console.log(val);
+      
+        json.album.images[index].image.position = index + 1;
+        json.album.images[index].image.imageLength = json.album.images.length;
+        json.album.containerWidth += val.image.width;
+        json.album.maxWidth = self.maxWidth;
+      });
+
+      console.log(json);
+      
+
+       var albumTemplateSource = $("#imgurAlbumTemplate").html(),
           albumTemplate = Handlebars.compile(albumTemplateSource),
-          albumHTML = albumTemplate(json.album);   
+          albumHTML = albumTemplate(json.album);
+      
 
       $('#' + postData.name).find('.image-embed').html(albumHTML);
 
     });
 
+  }
+
+  function renderAlbumPreview() {
+
+  }
+
+  function renderAlbum() {
+    
   }
 
   //Create readable title from ?r= subdomain value

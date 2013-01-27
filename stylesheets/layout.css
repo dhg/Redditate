@@ -115,12 +115,29 @@ h2 a {
 	-webkit-overflow-scrolling: touch;
 }
 
-.imgur-album ul {
-	width: 1000%;
-}
-
 .imgur-album li {
 	float: left;
+	position: relative;
+}
+
+.image-count {
+	color: #fff;
+	font-family: "Adelle", "Georgia", "Times New Roman", serif;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.8);
+	opacity: .6;
+}
+
+.open-album {
+	color: #fff;
+	font-family: "Adelle", "Georgia", "Times New Roman", serif;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.8);
+	opacity: .6;
 }
 
 /* Listview

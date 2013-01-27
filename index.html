@@ -79,9 +79,14 @@
 	</script>
 	<script id="imgurAlbumTemplate" type="text/x-handlebars-template">
 		<div class="imgur-album">
-			<ul>
+			<ul style="width:{{containerWidth}}px;">
 				{{#each images}}
-					<li><img src="{{links.large_thumbnail}}" height="{{image.height}}" width="{{image.width}}" alt="{{image.title}}"></li>
+					<li>
+						<a class="open-album" href="#" title="Open Album">Open Album</a>
+						<span class="image-count">{{image.position}} / {{image.imageLength}}</span>
+						<img src="{{links.large_thumbnail}}" style="" alt="{{image.title}}">
+
+					</li>
 				{{/each}}
 			</ul>
 		</div>
