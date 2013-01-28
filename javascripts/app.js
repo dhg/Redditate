@@ -111,63 +111,58 @@ $(document).ready(function() {
       
   }
 
-  // Hit the imgur API for some sweet json
   function fetchImgurAlbum(postData) {
     var pathArray = postData.url.split( '/' ),
         hash = pathArray[4],
         albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json',
-        previewImage = {
-          album: {
-            images: []
-          }
-        },
         self = this;
 
     console.log(hash);
 
     $.getJSON(albumUrl, function(json, textStatus) {
 
-      // console.log(json);
-
-      // console.log(json.album.images[0]);
+      console.log(json);
       
-
-      previewImage.album.images.push(json.album.images[0]);
-
-      // console.log(previewImage);
-      
-      
-      renderAlbum(postData, previewImage);
+      renderAlbum(postData, json);
        
     });
 
   }
 
-  // render a preview (1st) image of the imgur album
-  function renderAlbumPreview() {
+  function renderAlbum(postData, imgurAlbumData) {
+    $.each(imgurAlbumData.album.images, function(index, val) {
 
-  }
-
-  // render the full imgur album
-  function renderAlbum(postData, previewImage) {
-
-    console.log('post data:', postData);
+      console.log(val);
     
-    $.each(previewImage.album.images, function(index, val) {
-
-      // console.log(val);
-    
-      // json.album.images[index].image.position = index + 1;
-      // json.album.images[index].image.imageLength = json.album.images.length;
+      // imgurAlbumData.album.images[index].image.position = index + 1;
+      // imgurAlbumData.album.images[index].image.imageLength = imgurAlbumData.album.images.length;
       
     });
 
     var albumTemplateSource = $("#imgurAlbumTemplate").html(),
         albumTemplate = Handlebars.compile(albumTemplateSource),
-        albumHTML = albumTemplate(previewImage.album);
+        albumHTML = albumTemplate(imgurAlbumData.album);
       
 
     $('#' + postData.name).find('.image-embed').html(albumHTML);
+
+    var $previewImage = $('.imgur-album').find('li:first-of-type img'),
+        previewImageSrc = $previewImage.data('src');
+
+    $previewImage.attr('src', previewImageSrc);
+
+    // bind click event to first image to load rest of album
+    $('#album-' + imgurAlbumData.album.cover).bind('click', function(event) {
+      
+      $(this).siblings('li').find('img').each(function(index) {
+        console.log($(this));
+        
+
+        $(this).attr('src', $(this).data('src'));
+      });
+
+      $(this).parents('.imgur-album').addClass('show-album')
+    });
   }
 
   //Create readable title from ?r= subdomain value
