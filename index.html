@@ -65,6 +65,8 @@
 					{{score}} points |
 					<a class="permalink" href="http://www.reddit.com{{permalink}}" target="_blank">{{num_comments}} comments</a> |
 					{{domain}}
+					{{#isAlbum url}}
+					{{/isAlbum}}
 				</div>
 				{{#hasImage url}}
 					{{url}}
@@ -74,6 +76,17 @@
 				{{/hasYoutube}}
 			</div>
 		</div>
+	</script>
+	<script id="imgurAlbumTemplate" type="text/x-handlebars-template">
+		<ul id="album-{{cover}}" class="imgur-album">
+			<a class="open-album" href="#" title="Album">Album</a>
+			{{#each images}}
+				<li>
+					<span class="image-count">{{image.position}} / {{image.imageLength}}</span>
+					<img src="images/grey.gif" data-src="{{links.large_thumbnail}}" alt="{{image.title}}">
+				</li>
+			{{/each}}
+		</ul>
 	</script>
 	<script src='javascripts/jquery.cookie.js'></script>
 	<script src='javascripts/imagesLoaded.js'></script>
