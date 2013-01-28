@@ -111,17 +111,13 @@ $(document).ready(function() {
       
   }
 
+  // hit the imgur API for some sweet json
   function fetchImgurAlbum(postData) {
     var pathArray = postData.url.split( '/' ),
         hash = pathArray[4],
-        albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json',
-        self = this;
-
-    console.log(hash);
+        albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
 
     $.getJSON(albumUrl, function(json, textStatus) {
-
-      console.log(json);
       
       renderAlbum(postData, json);
        
@@ -129,39 +125,31 @@ $(document).ready(function() {
 
   }
 
+  // render first image as a preview and store rest of src tags as data attributes
   function renderAlbum(postData, imgurAlbumData) {
-    $.each(imgurAlbumData.album.images, function(index, val) {
-
-      console.log(val);
-    
-      // imgurAlbumData.album.images[index].image.position = index + 1;
-      // imgurAlbumData.album.images[index].image.imageLength = imgurAlbumData.album.images.length;
-      
-    });
-
     var albumTemplateSource = $("#imgurAlbumTemplate").html(),
         albumTemplate = Handlebars.compile(albumTemplateSource),
         albumHTML = albumTemplate(imgurAlbumData.album);
       
-
+        
     $('#' + postData.name).find('.image-embed').html(albumHTML);
 
-    var $previewImage = $('.imgur-album').find('li:first-of-type img'),
+    var $previewImage = $('#album-' + imgurAlbumData.album.cover).find('li:first-of-type img'),
         previewImageSrc = $previewImage.data('src');
 
     $previewImage.attr('src', previewImageSrc);
 
     // bind click event to first image to load rest of album
-    $('#album-' + imgurAlbumData.album.cover).bind('click', function(event) {
+    $('#album-' + imgurAlbumData.album.cover).find('.open-album').bind('click', function(event) {
       
       $(this).siblings('li').find('img').each(function(index) {
-        console.log($(this));
-        
 
         $(this).attr('src', $(this).data('src'));
+
       });
 
-      $(this).parents('.imgur-album').addClass('show-album')
+      $(this).parents('.imgur-album').addClass('show-album');
+
     });
   }
 

@@ -78,8 +78,8 @@
 		</div>
 	</script>
 	<script id="imgurAlbumTemplate" type="text/x-handlebars-template">
-		<ul class="imgur-album">
-			<a id="album-{{cover}}" class="open-album" href="#" title="Album">Album</a>
+		<ul id="album-{{cover}}" class="imgur-album">
+			<a class="open-album" href="#" title="Album">Album</a>
 			{{#each images}}
 				<li>
 					<span class="image-count">{{image.position}} / {{image.imageLength}}</span>
