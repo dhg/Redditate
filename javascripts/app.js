@@ -102,9 +102,7 @@ $(document).ready(function() {
 
     // If it's an imgur album make a request to the imgur API
     if (postData.url.indexOf('imgur.com/a/') >= 0) {
-      fetchImgurAlbum(postData);
-      console.log('album');
-      
+      fetchImgurAlbum(postData);      
     } 
 
       posts.append(postHTML);
@@ -118,7 +116,7 @@ $(document).ready(function() {
         albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
 
     $.getJSON(albumUrl, function(json, textStatus) {
-      
+
       renderAlbum(postData, json);
        
     });
