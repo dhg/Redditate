@@ -82,8 +82,12 @@
 			<a class="open-album" href="#" title="Album">Album</a>
 			{{#each images}}
 				<li>
-					<span class="image-count">{{image.position}} / {{image.imageLength}}</span>
-					<img src="images/grey.gif" data-src="{{links.large_thumbnail}}" alt="{{image.title}}">
+					<a class="image-embed">
+						<img src="images/grey.gif" data-src="{{links.large_thumbnail}}" alt="{{image.caption}}">
+					</a>
+					{{#if image.caption}}
+						<p class="imgur-caption">{{image.caption}}</p>
+					{{/if}}
 				</li>
 			{{/each}}
 		</ul>
