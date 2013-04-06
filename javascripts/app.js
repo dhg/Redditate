@@ -126,7 +126,13 @@ $(document).ready(function() {
       if (isQuickMeme !== null) {
         url = "http://i.qkme.me/" + isQuickMeme[1] + ".jpg";
       }
-    }
+      
+      var isLiveMeme = (/(?:livememe\.com)\/(\w*)/).exec(url);
+      if (isLiveMeme !== null) {
+        url = "http://ai1.livememe.com/" +isLiveMeme[1] + ".gif";
+      }
+    } 
+    
     if(isImage(url)) {
       return '<a class="image-embed"><img src="'+url+'" alt="" /></a>';
     } else {
