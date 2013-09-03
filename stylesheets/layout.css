@@ -143,7 +143,7 @@ h2 a {
 	opacity: .6;
 }
 
-.open-album {
+a.open-album {
 	background: rgba(255,255,255,.7);
 	-webkit-border-radius: 3px;
 	        border-radius: 3px;
@@ -159,6 +159,10 @@ h2 a {
 	text-decoration: none;
 	text-transform: uppercase;
 	z-index: 2;
+}
+
+.imgur-caption {
+	font-size: 13px;
 }
 
 /* Listview
