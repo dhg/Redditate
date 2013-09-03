@@ -415,7 +415,6 @@ $(document).ready(function() {
 
   //Set and cookie the viewType (fullview/listview)
   function setupViewtype(viewClick) {
-    debugger;
     var activeClass = viewClick.data('viewtype');
     $('body')
       .removeClass('listview')
