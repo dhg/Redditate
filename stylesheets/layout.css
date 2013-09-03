@@ -128,7 +128,7 @@ h2 a {
 	display: block;
 }
 
-.imgur-album.show-album .open-album {
+.imgur-album.show-album .open-album-wrapper {
 	display: none;
 }
 
@@ -143,7 +143,7 @@ h2 a {
 	opacity: .6;
 }
 
-.imgur-album .open-album {
+.imgur-album .open-album-wrapper {
 	background: rgba(0,0,0,.8);
 	-webkit-border-radius: 3px;
 	        border-radius: 3px;
@@ -153,7 +153,7 @@ h2 a {
 	left: 10px;
 	z-index: 2;
 }
-.imgur-album .open-album a {
+.imgur-album .open-album-wrapper .open-album {
 	text-decoration: none;
 	color: #fff;
 	font-size: 10px;

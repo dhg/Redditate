@@ -31,11 +31,11 @@ $(document).ready(function() {
   window.scrollTo(0,0);
 
   // If viewType cookied, set it
-  if($.cookie("viewType")) {
+  if($.cookie("viewtype")) {
     $('body')
       .removeClass('fullview')
       .removeClass('listview')
-      .addClass($.cookie("viewType"));
+      .addClass($.cookie("viewtype"));
   }
 
   //Initial JSON load
@@ -47,15 +47,15 @@ $(document).ready(function() {
   function loadJSON() {
     $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
-        renderPost(post.data);
+        // renderPost(post.data);
         afterString = post.data.name;
       });
     }).complete(function() {
-      post = $('.post');
-      classifyImages();
-      loader.fadeOut(100);
-      loadMore.removeClass('loading');
-      lock = false;
+      // post = $('.post');
+      // classifyImages();
+      // loader.fadeOut(100);
+      // loadMore.removeClass('loading');
+      // lock = false;
     });
   }
 
@@ -102,11 +102,11 @@ $(document).ready(function() {
 
     // If it's an imgur album make a request to the imgur API
     if (postData.url.indexOf('imgur.com/a/') >= 0) {
-      fetchImgurAlbum(postData);      
-    } 
+      fetchImgurAlbum(postData);
+    }
 
       posts.append(postHTML);
-      
+
   }
 
   // hit the imgur API for some sweet json
@@ -118,7 +118,7 @@ $(document).ready(function() {
     $.getJSON(albumUrl, function(json, textStatus) {
 
       renderAlbum(postData, json);
-       
+
     });
 
   }
@@ -128,8 +128,8 @@ $(document).ready(function() {
     var albumTemplateSource = $("#imgurAlbumTemplate").html(),
         albumTemplate = Handlebars.compile(albumTemplateSource),
         albumHTML = albumTemplate(imgurAlbumData.album);
-      
-        
+
+
     $('#' + postData.name).find('.image-embed').html(albumHTML);
 
     var $previewImage = $('#album-' + imgurAlbumData.album.cover).find('li:first-of-type img'),
@@ -139,8 +139,10 @@ $(document).ready(function() {
 
     // bind click event to first image to load rest of album
     $('#album-' + imgurAlbumData.album.cover).find('.open-album').bind('click', function(event) {
-      
-      $(this).siblings('li').find('img').each(function(index) {
+
+      event.preventDefault();
+
+      $(this).parent('.open-album-wrapper').siblings('li').find('img').each(function(index) {
 
         $(this).attr('src', $(this).data('src'));
 
@@ -177,16 +179,16 @@ $(document).ready(function() {
       if (isQuickMeme !== null) {
         url = "http://i.qkme.me/" + isQuickMeme[1] + ".jpg";
       }
-      
+
       var isLiveMeme = (/(?:livememe\.com)\/(\w*)/).exec(url);
       if (isLiveMeme !== null) {
         url = "http://ai1.livememe.com/" +isLiveMeme[1] + ".gif";
       }
-    } 
-    
+    }
+
     if(isImage(url)) {
       return '<a class="image-embed"><img src="'+url+'" alt="" /></a>';
-    } 
+    }
   });
 
   // YOUTUBE: If embedded video is real, render it
@@ -220,7 +222,7 @@ $(document).ready(function() {
   //Interactions -------------------------------------------------------------------------------
 
   // Image fullsize on click
-  $('.post .image-embed').live('click', function(e) {
+  $('.post .image-embed').on('click', function(e) {
     e.preventDefault();
     resizeImage($(this));
   });
@@ -413,7 +415,8 @@ $(document).ready(function() {
 
   //Set and cookie the viewType (fullview/listview)
   function setupViewtype(viewClick) {
-    var activeClass = viewClick.data('viewType');
+    debugger;
+    var activeClass = viewClick.data('viewtype');
     $('body')
       .removeClass('listview')
       .removeClass('fullview')
@@ -423,8 +426,8 @@ $(document).ready(function() {
     } else {
       window.scrollTo(0,0);
     }
-    $.cookie("viewType", null);
-    $.cookie("viewType", activeClass, { expires: 100 });
+    $.cookie("viewtype", null);
+    $.cookie("viewtype", activeClass, { expires: 100 });
   }
 
   // Open picker
