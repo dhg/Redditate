@@ -40,7 +40,7 @@
 	<link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png">
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png">
-	
+
 	<!-- JS
 	================================================== -->
 	<script type="text/javascript" src="http://use.typekit.com/ytf8lmc.js"></script>
@@ -79,7 +79,6 @@
 	</script>
 	<script id="imgurAlbumTemplate" type="text/x-handlebars-template">
 		<ul id="album-{{cover}}" class="imgur-album">
-			<a class="open-album" href="#" title="Album">Album</a>
 			{{#each images}}
 				<li>
 					<a class="image-embed">
@@ -90,6 +89,9 @@
 					{{/if}}
 				</li>
 			{{/each}}
+			<li class="open-album">
+				<a href="#" title="Album">View album</a>
+			</li>
 		</ul>
 	</script>
 	<script src='javascripts/jquery.cookie.js'></script>

@@ -143,25 +143,28 @@ h2 a {
 	opacity: .6;
 }
 
-a.open-album {
-	background: rgba(255,255,255,.7);
+.imgur-album .open-album {
+	background: rgba(0,0,0,.8);
 	-webkit-border-radius: 3px;
 	        border-radius: 3px;
-	color: rgba(0,0,0,.9);
-	display: inline-block;
-	font-family: Helvetica, Arial, Helvetica, sans-serif;
-	font-weight: 600;
+	display: block;
 	position: absolute;
-	top: 10px;
-	right: 10px;
-	padding: 4px 5px;
-	opacity: .6;
-	text-decoration: none;
-	text-transform: uppercase;
+	bottom: 10px;
+	left: 10px;
 	z-index: 2;
+}
+.imgur-album .open-album a {
+	text-decoration: none;
+	color: #fff;
+	font-size: 10px;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 2px 8px;
+	display: block;
 }
 
 .imgur-caption {
+	display: none;
 	font-size: 13px;
 }
 
