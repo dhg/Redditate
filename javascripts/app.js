@@ -47,7 +47,7 @@ $(document).ready(function() {
   function loadJSON() {
     $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
-        // renderPost(post.data);
+        renderPost(post.data);
         afterString = post.data.name;
       });
     }).complete(function() {
@@ -415,6 +415,7 @@ $(document).ready(function() {
 
   //Set and cookie the viewType (fullview/listview)
   function setupViewtype(viewClick) {
+    debugger;
     var activeClass = viewClick.data('viewtype');
     $('body')
       .removeClass('listview')
