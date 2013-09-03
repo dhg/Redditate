@@ -51,11 +51,11 @@ $(document).ready(function() {
         afterString = post.data.name;
       });
     }).complete(function() {
-      // post = $('.post');
-      // classifyImages();
-      // loader.fadeOut(100);
-      // loadMore.removeClass('loading');
-      // lock = false;
+      post = $('.post');
+      classifyImages();
+      loader.fadeOut(100);
+      loadMore.removeClass('loading');
+      lock = false;
     });
   }
 
