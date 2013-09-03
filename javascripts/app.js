@@ -96,10 +96,61 @@ $(document).ready(function() {
 
   // Render Post with Handlebars
   function renderPost(postData) {
-    var templateSource   = $("#postTemplate").html();
-    var postTemplate = Handlebars.compile(templateSource);
-    var postHTML = postTemplate(postData);
-    posts.append(postHTML);
+    var templateSource   = $("#postTemplate").html(),
+        postTemplate = Handlebars.compile(templateSource);
+        postHTML = postTemplate(postData);
+
+    // If it's an imgur album make a request to the imgur API
+    if (postData.url.indexOf('imgur.com/a/') >= 0) {
+      fetchImgurAlbum(postData);
+      console.log('album');
+      
+    } 
+
+      posts.append(postHTML);
+      
+  }
+
+  // hit the imgur API for some sweet json
+  function fetchImgurAlbum(postData) {
+    var pathArray = postData.url.split( '/' ),
+        hash = pathArray[4],
+        albumUrl = 'http://api.imgur.com/2/album/' + hash + '.json';
+
+    $.getJSON(albumUrl, function(json, textStatus) {
+      
+      renderAlbum(postData, json);
+       
+    });
+
+  }
+
+  // render first image as a preview and store rest of src tags as data attributes
+  function renderAlbum(postData, imgurAlbumData) {
+    var albumTemplateSource = $("#imgurAlbumTemplate").html(),
+        albumTemplate = Handlebars.compile(albumTemplateSource),
+        albumHTML = albumTemplate(imgurAlbumData.album);
+      
+        
+    $('#' + postData.name).find('.image-embed').html(albumHTML);
+
+    var $previewImage = $('#album-' + imgurAlbumData.album.cover).find('li:first-of-type img'),
+        previewImageSrc = $previewImage.data('src');
+
+    $previewImage.attr('src', previewImageSrc);
+
+    // bind click event to first image to load rest of album
+    $('#album-' + imgurAlbumData.album.cover).find('.open-album').bind('click', function(event) {
+      
+      $(this).siblings('li').find('img').each(function(index) {
+
+        $(this).attr('src', $(this).data('src'));
+
+      });
+
+      $(this).parents('.imgur-album').addClass('show-album');
+
+    });
   }
 
   //Create readable title from ?r= subdomain value
@@ -115,8 +166,9 @@ $(document).ready(function() {
   // IMAGE: Rendering fullsize images
   Handlebars.registerHelper('hasImage', function(url, fn) {
     var isImgur = (/imgur*/).test(url);
-    // Fix broken imgur links
+
     if(isImgur) {
+
       if(isImage(url)) {
         // do nothing
       } else {
@@ -130,9 +182,7 @@ $(document).ready(function() {
     }
     if(isImage(url)) {
       return '<a class="image-embed"><img src="'+url+'" alt="" /></a>';
-    } else {
-      return false;
-    }
+    } 
   });
 
   // YOUTUBE: If embedded video is real, render it
@@ -156,6 +206,12 @@ $(document).ready(function() {
     }
   });
 
+  // Handlebars.registerHelper('isAlbum', function(url, fn) {
+  //   // If it's an imgur album return false
+  //   if (url.indexOf('imgur.com/a/') >= 0) {
+  //     return ' (album)';
+  //   }
+  // });
 
   //Interactions -------------------------------------------------------------------------------
 

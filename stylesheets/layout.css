@@ -108,6 +108,59 @@ h2 a {
 	font-weight: 300;
 }
 
+/* Album
+================================================== */
+.imgur-album {
+	display: inline-block;
+	position: relative;
+}
+
+.imgur-album li {
+	display: none;
+	position: relative;
+}
+
+.imgur-album li:first-of-type {
+	display: block;
+}
+
+.imgur-album.show-album li {
+	display: block;
+}
+
+.imgur-album.show-album .open-album {
+	display: none;
+}
+
+.image-count {
+	color: #fff;
+	display: none;
+	font-family: "Adelle", "Georgia", "Times New Roman", serif;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.8);
+	opacity: .6;
+}
+
+.open-album {
+	background: rgba(255,255,255,.7);
+	-webkit-border-radius: 3px;
+	        border-radius: 3px;
+	color: rgba(0,0,0,.9);
+	display: inline-block;
+	font-family: Helvetica, Arial, Helvetica, sans-serif;
+	font-weight: 600;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	padding: 4px 5px;
+	opacity: .6;
+	text-decoration: none;
+	text-transform: uppercase;
+	z-index: 2;
+}
+
 /* Listview
 ================================================== */
 .listview .post .image-embed,
