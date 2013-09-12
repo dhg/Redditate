@@ -221,12 +221,6 @@ $(document).ready(function() {
 
   //Interactions -------------------------------------------------------------------------------
 
-  // Image fullsize on click
-  $('.post .image-embed').on('click', function(e) {
-    e.preventDefault();
-    resizeImage($(this));
-  });
-
   // Toggling grid/list/full view
   $('.view-options a').click(function(e) {
     e.preventDefault();
@@ -301,7 +295,7 @@ $(document).ready(function() {
         }
         // "Z" zooms on image in post if there is one
         if (evt.keyCode == 90) {
-          resizeImage(post.eq(activePost-1).find('.image-embed'));
+          resizeImage(post.eq(activePost-1).find('.image-embed img'));
         }
         // "C" zooms on image in post if there is one
         if (evt.keyCode == 67) {
@@ -389,6 +383,13 @@ $(document).ready(function() {
 
   function classifyImages() {
     $('img').not('already-classified').imagesLoaded(function() {
+
+      // Image fullsize on click
+      $('.post .image-embed img').click(function(e) {
+        e.preventDefault();
+        resizeImage($(this));
+      });
+
       $(this).each(function() {
       $(this).addClass('already-classified');
         if($(this).width() == 880) {
@@ -402,20 +403,19 @@ $(document).ready(function() {
 
   // Resize fullview inlined image
   function resizeImage(clickTarget) {
-    if(clickTarget.children('img').hasClass('fullwidth')) {
+    if(clickTarget.hasClass('fullwidth')) {
       // Determine if image is above offscreen and if so, make it at top of shrink
-      var postParentPosition = clickTarget.children('img').offset();
+      var postParentPosition = clickTarget.offset();
       if(postParentPosition.top < $(window).scrollTop()) {
         window.scrollTo(postParentPosition.left, (postParentPosition.top - $('nav').height() - 10));
       }
     }
     // Toggle fullwidth class
-    clickTarget.children('img').toggleClass('fullwidth');
+    clickTarget.toggleClass('fullwidth');
   }
 
   //Set and cookie the viewType (fullview/listview)
   function setupViewtype(viewClick) {
-    debugger;
     var activeClass = viewClick.data('viewtype');
     $('body')
       .removeClass('listview')

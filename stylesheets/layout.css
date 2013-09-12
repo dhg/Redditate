@@ -88,6 +88,9 @@ nav .view-options a {
 .post .metadata a:hover {
 	color: #333;
 }
+.post .image-embed {
+	display: inline-block;
+}
 .post .image-embed img {
 	max-width: 880px;
 	max-height: 501px;
