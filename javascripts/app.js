@@ -382,7 +382,7 @@ $(document).ready(function() {
   }
 
   function classifyImages() {
-    $('img').not('already-classified').imagesLoaded(function() {
+    imagesLoaded($('img').not('.already-classified'), function() {
 
       // Image fullsize on click
       $('.post .image-embed img').click(function(e) {
@@ -391,7 +391,7 @@ $(document).ready(function() {
       });
 
       $(this).each(function() {
-      $(this).addClass('already-classified');
+        $(this).addClass('already-classified');
         if($(this).width() == 880) {
           $(this).addClass('not-resizeable')
         } else if($(this).width() != 880 && $(this).height() != 501) {
