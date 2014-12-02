@@ -54,6 +54,7 @@ $(document).ready(function() {
         //Save the post id.
         loadedPosts.push(post.data.id);
       });
+
     }).complete(function() {
       post = $('.post');
       classifyImages();
@@ -216,12 +217,12 @@ $(document).ready(function() {
     }
   });
 
-  // Handlebars.registerHelper('isAlbum', function(url, fn) {
-  //   // If it's an imgur album return false
-  //   if (url.indexOf('imgur.com/a/') >= 0) {
-  //     return ' (album)';
-  //   }
-  // });
+   Handlebars.registerHelper('isAlbum', function(url, fn) {
+     // If it's an imgur album return false
+     if (url.indexOf('imgur.com/a/') >= 0) {
+       return ' (album)';
+     }
+   });
 
   //Interactions -------------------------------------------------------------------------------
 
@@ -272,7 +273,9 @@ $(document).ready(function() {
       if (evt.keyCode == 91) {
         commandDown = true;
       }
+
       if (!$('.subreddit-shortcut').hasClass('visible')) {
+
         // "J" goes to next post
         if (evt.keyCode == 74) {
           if(activePost == post.length-1) {
@@ -317,6 +320,7 @@ $(document).ready(function() {
           window.open(postLink,'_newtab');
         }
       }
+
     }
   };
 
@@ -407,6 +411,7 @@ $(document).ready(function() {
 
   // Resize fullview inlined image
   function resizeImage(clickTarget) {
+
     if(clickTarget.hasClass('fullwidth')) {
       // Determine if image is above offscreen and if so, make it at top of shrink
       var postParentPosition = clickTarget.offset();
