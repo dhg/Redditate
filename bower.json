@@ -1,0 +1,24 @@
+{
+  "name": "Redditate",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dhg/Redditate",
+  "authors": [
+    "dhg"
+  ],
+  "description": "A simple, minimal viewer for Reddit",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "handlebars": "~2.0.0",
+    "imagesloaded": "~3.1.8",
+    "jquery.cookie": "~1.4.1",
+    "spinjs": "~2.0.1"
+  }
+}
