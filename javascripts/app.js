@@ -25,6 +25,7 @@ $(document).ready(function() {
   commandDown = false,
   subredditShortcutJustLaunched = false,
   loadedPosts = [];
+  isTouchDevice = 'ontouchstart' in document.documentElement;
 
 
 //Initial Load -------------------------------------------------------------------------------
@@ -70,41 +71,43 @@ $(document).ready(function() {
       this.pause();
     });
 
-    $('video:in-viewport').each(function(){
-      this.play();
-    })
+    if (!isTouchDevice) {
+      $('video:in-viewport').each(function(){
+        this.play();
+      })
+    }
   }
 
-  // function throttle(fn, threshhold, scope) {
-  //   threshhold || (threshhold = 250);
-  //   var last,
-  //       deferTimer;
-  //   return function () {
-  //     var context = scope || this;
+  function throttle(fn, threshhold, scope) {
+    threshhold || (threshhold = 250);
+    var last,
+        deferTimer;
+    return function () {
+      var context = scope || this;
 
-  //     var now = +new Date,
-  //         args = arguments;
-  //     if (last && now < last + threshhold) {
-  //       // hold on to it
-  //       clearTimeout(deferTimer);
-  //       deferTimer = setTimeout(function () {
-  //         last = now;
-  //         fn.apply(context, args);
-  //       }, threshhold);
-  //     } else {
-  //       last = now;
-  //       fn.apply(context, args);
-  //     }
-  //   };
-  // }
+      var now = +new Date,
+          args = arguments;
+      if (last && now < last + threshhold) {
+        // hold on to it
+        clearTimeout(deferTimer);
+        deferTimer = setTimeout(function () {
+          last = now;
+          fn.apply(context, args);
+        }, threshhold);
+      } else {
+        last = now;
+        fn.apply(context, args);
+      }
+    };
+  }
 
-  // throttledVideo = throttle(playVisibleVideos, 100)
+  throttledVideo = throttle(playVisibleVideos, 100)
 
   $(window).scroll(function(){
 
     // Load more JSON from scroll
     if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10){
-      if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/iPad/i)) {
+      if (isTouchDevice) {
 
       } else {
         if(lock == false) {
@@ -123,7 +126,7 @@ $(document).ready(function() {
         activePost--
       }
     }
-    // throttledVideo();
+    throttledVideo();
     // console.log("activePost: "+activePost+", documentScrollTop: "+$(document).scrollTop()+", activePost offset top: "+(post.eq(activePost).offset().top-90))
 
   });
@@ -237,7 +240,7 @@ $(document).ready(function() {
 
     if (isGifv !== null) {
       return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
-          '<video loop="loop" controls autoplay width="auto" height="auto">' +
+          '<video loop="loop" autoplay width="auto" height="auto">' +
             '<source src="https://i.imgur.com/' + isGifv[1] + '.mp4">' +
           '</video>' +
         '</div>';
@@ -245,7 +248,7 @@ $(document).ready(function() {
       return '<img class="gfyitem" data-id="' + isGfycat[1] + '" />';
     } else if (isWebm) {
       return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
-          '<video loop="loop" controls autoplay width="auto" height="auto">' +
+          '<video loop="loop" autoplay width="auto" height="auto">' +
             '<source src="' + url[1] + '>' +
           '</video>' +
         '</div>';
@@ -275,12 +278,12 @@ $(document).ready(function() {
     }
   });
 
-  // Handlebars.registerHelper('isAlbum', function(url, fn) {
-  //   // If it's an imgur album return false
-  //   if (url.indexOf('imgur.com/a/') >= 0) {
-  //     return ' (album)';
-  //   }
-  // });
+  Handlebars.registerHelper('isAlbum', function(url, fn) {
+    // If it's an imgur album return false
+    if (url.indexOf('imgur.com/a/') >= 0) {
+      return ' (album)';
+    }
+  });
 
   //Interactions -------------------------------------------------------------------------------
 
