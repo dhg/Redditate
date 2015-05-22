@@ -96,18 +96,23 @@ nav .view-options a {
 	max-height: 501px;
 	cursor:url(../images/zoom-in-icon.png), -moz-zoom-in;
 }
-.post .video-embed video,
+.post .video-embed video {
+	max-width: 100%;
+	max-height: 501px;
+}
 .post .gfyitem,
 .post .gfyitem .gfyVid,
-.post .gfyitem .gfyPreLoadCanvas,
 .post .gfyitem > div {
 	/* have to throw importants cause the lame gifycat library */
+	position: relative !important;
+	height: auto !important;
 	max-width: 100% !important;
 	max-height: 501px !important;
 	z-index: 1 !important;
 }
-.gfyDotCanvas
-.gfyCtrlBox {
+.gfyDotCanvas,
+.gfyCtrlBox,
+.gfyPreLoadCanvas {
 	display: none !important;
 }
 .post img.fullwidth {
