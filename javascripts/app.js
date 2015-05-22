@@ -238,7 +238,7 @@ $(document).ready(function() {
     if (isGifv !== null) {
       return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
           '<video loop="loop" controls autoplay width="auto" height="auto">' +
-            '<source src="https://i.imgur.com/' + isGifv[1] + '.mp4" type="video/mp4">' +
+            '<source src="https://i.imgur.com/' + isGifv[1] + '.mp4">' +
           '</video>' +
         '</div>';
     } else if (isGfycat !== null) {
@@ -246,7 +246,7 @@ $(document).ready(function() {
     } else if (isWebm) {
       return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
           '<video loop="loop" controls autoplay width="auto" height="auto">' +
-            '<source src="' + url[1] + '" type="video/webm">' +
+            '<source src="' + url[1] + '>' +
           '</video>' +
         '</div>';
     } else if(isImage(url)) {
