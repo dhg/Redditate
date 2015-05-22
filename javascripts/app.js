@@ -60,8 +60,45 @@ $(document).ready(function() {
       loader.fadeOut(100);
       loadMore.removeClass('loading');
       lock = false;
+      playVisibleVideos();
+      gfyCollection.init();
     });
   }
+
+  function playVisibleVideos() {
+    $('video').each(function(){
+      this.pause();
+    });
+
+    $('video:in-viewport').each(function(){
+      this.play();
+    })
+  }
+
+  function throttle(fn, threshhold, scope) {
+    threshhold || (threshhold = 250);
+    var last,
+        deferTimer;
+    return function () {
+      var context = scope || this;
+
+      var now = +new Date,
+          args = arguments;
+      if (last && now < last + threshhold) {
+        // hold on to it
+        clearTimeout(deferTimer);
+        deferTimer = setTimeout(function () {
+          last = now;
+          fn.apply(context, args);
+        }, threshhold);
+      } else {
+        last = now;
+        fn.apply(context, args);
+      }
+    };
+  }
+
+  throttledVideo = throttle(playVisibleVideos, 100)
 
   $(window).scroll(function(){
     // Load more JSON from scroll
@@ -85,7 +122,9 @@ $(document).ready(function() {
         activePost--
       }
     }
+    throttledVideo();
     // console.log("activePost: "+activePost+", documentScrollTop: "+$(document).scrollTop()+", activePost offset top: "+(post.eq(activePost).offset().top-90))
+
   });
 
   // Load more JSON from click (tablet/mobile)
@@ -95,6 +134,8 @@ $(document).ready(function() {
       loadJSON();
     }
   });
+
+
 
   //Rendering -------------------------------------------------------------------------------
 
@@ -170,6 +211,9 @@ $(document).ready(function() {
   // IMAGE: Rendering fullsize images
   Handlebars.registerHelper('hasImage', function(url, fn) {
     var isImgur = (/imgur*/).test(url);
+    var isGifv = (/https?:\/\/i\.imgur\.com\/([A-Za-z0-9]+)\.gifv/).exec(url);
+    var isGfycat = (/https?:\/\/gfycat\.com\/([A-Za-z0-9]+)/).exec(url);
+    var isWebm = (/\.webm$/).test(url);
 
     if(isImgur) {
 
@@ -190,7 +234,21 @@ $(document).ready(function() {
       }
     }
 
-    if(isImage(url)) {
+    if (isGifv !== null) {
+      return '<div class="video-container" preload="auto" style="width: auto; height: auto;">' +
+          '<video loop="loop" width="auto" height="auto">' +
+            '<source src="https://i.imgur.com/' + isGifv[1] + '.mp4" type="video/mp4">' +
+          '</video>' +
+        '</div>';
+    } else if (isGfycat !== null) {
+      return '<img class="gfyitem" data-id="' + isGfycat[1] + '" />';
+    } else if (isWebm) {
+      return '<div class="video-container" preload="auto" style="width: auto; height: auto;">' +
+          '<video loop="loop" width="auto" height="auto">' +
+            '<source src="' + url[1] + '" type="video/webm">' +
+          '</video>' +
+        '</div>';
+    } else if(isImage(url)) {
       return '<a class="image-embed"><img src="'+url+'" alt="" /></a>';
     }
   });
