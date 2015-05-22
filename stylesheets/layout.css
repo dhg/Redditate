@@ -92,9 +92,17 @@ nav .view-options a {
 	display: inline-block;
 }
 .post .image-embed img {
-	max-width: 880px;
+	max-width: 100%;
 	max-height: 501px;
 	cursor:url(../images/zoom-in-icon.png), -moz-zoom-in;
+}
+.post .video-embed video,
+.post .gfyitem .gfyVid,
+.post .gfyitem .gfyPreLoadCanvas,
+.post .gfyitem > div {
+	max-width: 100%;
+	max-height: 501px;
+	z-index: 1 !important;
 }
 .post img.fullwidth {
 	max-height: none;
@@ -411,7 +419,8 @@ h2 a {
 
 
 @media only screen and (max-width: 880px) {
-	.post .image-embed img {
+	.post .image-embed img,
+	.post .video-embed video {
 		max-width: 100%;
 		height: auto;
 		cursor: default;

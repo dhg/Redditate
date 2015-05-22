@@ -235,7 +235,7 @@ $(document).ready(function() {
     }
 
     if (isGifv !== null) {
-      return '<div class="video-container" preload="auto" style="width: auto; height: auto;">' +
+      return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
           '<video loop="loop" width="auto" height="auto">' +
             '<source src="https://i.imgur.com/' + isGifv[1] + '.mp4" type="video/mp4">' +
           '</video>' +
@@ -243,7 +243,7 @@ $(document).ready(function() {
     } else if (isGfycat !== null) {
       return '<img class="gfyitem" data-id="' + isGfycat[1] + '" />';
     } else if (isWebm) {
-      return '<div class="video-container" preload="auto" style="width: auto; height: auto;">' +
+      return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
           '<video loop="loop" width="auto" height="auto">' +
             '<source src="' + url[1] + '" type="video/webm">' +
           '</video>' +
