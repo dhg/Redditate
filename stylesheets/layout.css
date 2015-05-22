@@ -187,13 +187,17 @@ h2 a {
 .listview .post .video-embed,
 .listview .post .gfyitem,
 .listview .post iframe  {
-	display: none;
+	display: none !important;
 }
 .listview .post .thumbnail-embed {
 	display: block;
 	float: left;
 	margin-right: 15px;
 	line-height: 0;
+	width: 140px;
+}
+.listview .post .thumbnail-embed > img {
+	width: 100%;
 }
 .listview .post h2 {
 	font-size: 24px;
