@@ -106,6 +106,10 @@ nav .view-options a {
 	max-height: 501px !important;
 	z-index: 1 !important;
 }
+.gfyDotCanvas
+.gfyCtrlBox {
+	display: none !important;
+}
 .post img.fullwidth {
 	max-height: none;
 	cursor:url(../images/zoom-out-icon.png), -moz-zoom-out;
