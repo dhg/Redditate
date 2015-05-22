@@ -100,8 +100,9 @@ nav .view-options a {
 .post .gfyitem .gfyVid,
 .post .gfyitem .gfyPreLoadCanvas,
 .post .gfyitem > div {
-	max-width: 100%;
-	max-height: 501px;
+	/* have to throw importants cause the lame gifycat library */
+	max-width: 100% !important;
+	max-height: 501px !important;
 	z-index: 1 !important;
 }
 .post img.fullwidth {
@@ -182,6 +183,8 @@ h2 a {
 /* Listview
 ================================================== */
 .listview .post .image-embed,
+.listview .post .video-embed,
+.listview .post .gfyitem,
 .listview .post iframe  {
 	display: none;
 }
