@@ -97,6 +97,7 @@ nav .view-options a {
 	cursor:url(../images/zoom-in-icon.png), -moz-zoom-in;
 }
 .post .video-embed video,
+.post .gfyitem,
 .post .gfyitem .gfyVid,
 .post .gfyitem .gfyPreLoadCanvas,
 .post .gfyitem > div {
