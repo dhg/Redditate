@@ -67,9 +67,9 @@ $(document).ready(function() {
   }
 
   function playVisibleVideos() {
-    $('video').each(function(){
-      this.pause();
-    });
+    // $('video').each(function(){
+    //   this.pause();
+    // });
 
     if (!isTouchDevice) {
       $('video:in-viewport').each(function(){
@@ -240,8 +240,9 @@ $(document).ready(function() {
 
     if (isGifv !== null) {
       return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
-          '<video loop="loop" autoplay width="auto" height="auto">' +
+          '<video loop="loop" controls width="auto" height="auto" style="background: #000">' +
             '<source src="https://i.imgur.com/' + isGifv[1] + '.mp4">' +
+            '<source src="https://i.imgur.com/' + isGifv[1] + '.webm">' +
           '</video>' +
         '</div>';
     } else if (isGfycat !== null) {
