@@ -67,13 +67,15 @@ $(document).ready(function() {
   }
 
   function playVisibleVideos() {
-    // $('video').each(function(){
-    //   this.pause();
-    // });
-
     if (!isTouchDevice) {
-      $('video:in-viewport').each(function(){
-        this.play();
+      $('video').each(function(){
+        if ($(this).is(':in-viewport')) {
+          if (this.currentTime == 0 || this.paused || this.ended) {
+            this.play();
+          }
+        } else {
+          this.pause();
+        }
       })
     }
   }
@@ -102,6 +104,8 @@ $(document).ready(function() {
   }
 
   throttledVideo = throttle(playVisibleVideos, 100)
+
+  $(window).load(throttledVideo);
 
   $(window).scroll(function(){
 
