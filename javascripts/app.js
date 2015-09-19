@@ -49,6 +49,10 @@ $(document).ready(function() {
   function loadJSON() {
     $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
+        // Convert imgur gif to HTML5 video.
+        if (post.url && post.url.match(/^.*imgur\.com\/.*\.gif$/g)) {
+          post.url += "v";
+        }
         //If the post wasn't loaded before, render it.
         if(loadedPosts.indexOf(post.data.id) < 0) renderPost(post.data);
         afterString = post.data.name;
