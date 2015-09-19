@@ -49,6 +49,10 @@ $(document).ready(function() {
   function loadJSON() {
     $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
       $.each(data.data.children, function(i, post) {
+        // Convert imgur gif to HTML5 video.
+        if (post.data.url !== undefined && post.data.url.match(/^.*imgur\.com\/.*\.gif$/g)) {
+          post.data.url += "v";
+        }
         //If the post wasn't loaded before, render it.
         if(loadedPosts.indexOf(post.data.id) < 0) renderPost(post.data);
         afterString = post.data.name;
@@ -67,13 +71,15 @@ $(document).ready(function() {
   }
 
   function playVisibleVideos() {
-    // $('video').each(function(){
-    //   this.pause();
-    // });
-
     if (!isTouchDevice) {
-      $('video:in-viewport').each(function(){
-        this.play();
+      $('video').each(function(){
+        if ($(this).is(':in-viewport')) {
+          if (this.currentTime == 0 || this.paused || this.ended) {
+            this.play();
+          }
+        } else {
+          this.pause();
+        }
       })
     }
   }
@@ -102,6 +108,8 @@ $(document).ready(function() {
   }
 
   throttledVideo = throttle(playVisibleVideos, 100)
+
+  $(window).load(throttledVideo);
 
   $(window).scroll(function(){
 
