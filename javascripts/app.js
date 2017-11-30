@@ -67,15 +67,9 @@ $(document).ready(function() {
   }
 
   function playVisibleVideos() {
-    // $('video').each(function(){
-    //   this.pause();
-    // });
-
-    if (!isTouchDevice) {
-      $('video:in-viewport').each(function(){
-        this.play();
-      })
-    }
+    $('video:in-viewport').each(function(){
+      this.play();
+    })
   }
 
   function throttle(fn, threshhold, scope) {
