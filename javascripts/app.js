@@ -243,7 +243,7 @@ $(document).ready(function() {
       return '<img class="gfyitem" data-id="' + isGfycat[1] + '" />';
     } else if (isWebm) {
       return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
-          '<video loop="loop" autoplay width="auto" height="auto">' +
+          '<video loop="loop" autoplay muted width="auto" height="auto">' +
             '<source src="' + url[1] + '>' +
           '</video>' +
         '</div>';
