@@ -61,14 +61,18 @@ $(document).ready(function() {
       loader.fadeOut(100);
       loadMore.removeClass('loading');
       lock = false;
-      // playVisibleVideos();
+      playVisibleVideos();
       gfyCollection.init();
     });
   }
 
   function playVisibleVideos() {
-    $('video:in-viewport').each(function(){
-      this.play();
+    $('video').each(function(){
+      if($(this).is(':in-viewport')) {
+        this.play();
+      } else {
+        this.pause();
+      }
     })
   }
 
@@ -95,7 +99,7 @@ $(document).ready(function() {
     };
   }
 
-  // throttledVideo = throttle(playVisibleVideos, 100)
+  throttledVideo = throttle(playVisibleVideos, 100)
 
   $(window).scroll(function(){
 
@@ -243,7 +247,7 @@ $(document).ready(function() {
       return '<img class="gfyitem" data-id="' + isGfycat[1] + '" />';
     } else if (isWebm) {
       return '<div class="video-embed" preload="auto" style="width: auto; height: auto;">' +
-          '<video loop="loop" playsinline width="auto" height="auto">' +
+          '<video loop="loop" playsinline autoplay width="auto" height="auto">' +
             '<source src="' + url[1] + '>' +
           '</video>' +
         '</div>';
