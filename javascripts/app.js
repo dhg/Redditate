@@ -61,7 +61,7 @@ $(document).ready(function() {
       loader.fadeOut(100);
       loadMore.removeClass('loading');
       lock = false;
-      playVisibleVideos();
+      // playVisibleVideos();
       gfyCollection.init();
     });
   }
@@ -95,7 +95,7 @@ $(document).ready(function() {
     };
   }
 
-  throttledVideo = throttle(playVisibleVideos, 100)
+  // throttledVideo = throttle(playVisibleVideos, 100)
 
   $(window).scroll(function(){
 
