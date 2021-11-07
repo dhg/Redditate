@@ -38,6 +38,7 @@ $(document).ready(function() {
       .removeClass('fullview')
       .removeClass('listview')
       .addClass($.cookie("viewtype"));
+      alert("test")
   }
 
   //Initial JSON load
@@ -47,7 +48,8 @@ $(document).ready(function() {
 
   // Load data
   function loadJSON() {
-    $.getJSON("http://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
+    $.getJSON("https://www.reddit.com/"+subdomain+".json?limit=25&after="+afterString+"&jsonp=?", null, function(data) {
+      console.log(data)
       $.each(data.data.children, function(i, post) {
         //If the post wasn't loaded before, render it.
         if(loadedPosts.indexOf(post.data.id) < 0) renderPost(post.data);
